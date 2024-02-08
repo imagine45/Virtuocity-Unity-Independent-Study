@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
+  - Ice
   layers:
   - Default
   - TransparentFX
@@ -49,6 +51,9 @@ TagManager:
     locked: 0
   - name: Background Front
     uniqueID: 3189483771
+    locked: 0
+  - name: Decorations
+    uniqueID: 3273202299
     locked: 0
   - name: Player
     uniqueID: 1075680237

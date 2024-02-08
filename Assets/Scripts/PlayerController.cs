@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     //private int groundSlamParticleCount = 0;
 
-    //public Animator animator;
+    public Animator animator;
 
     private float horizontal;
     private float speed = 7f;
@@ -50,11 +50,14 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        print("is Grounded? " + isGrounded() + "   jumped? " + jumped + "   velocity: " + rb.velocity.y);
         if (isGrounded())
         {
             //if (isGroundSmashing == true) { groundSlamParticles.Play(); }
             //groundSlamParticles.particleCount.Equals(0);
+
+            animator.SetBool("isFalling", false);
+
             coyoteTimer = 0;
             jumped = false;
             hasCoyoteTime = false;
@@ -71,6 +74,11 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            if (rb.velocity.y < 0)
+            {
+                animator.SetBool("isFalling", true);
+                animator.SetBool("jumped", false);
+            }
             groundSmashParticleCount();
 
             coyoteTime();
@@ -90,11 +98,11 @@ public class PlayerController : MonoBehaviour
         }
         if (Mathf.Abs(dx) < 0.05f && horizontal == 0)
         {
-            //animator.SetBool("isMoving", false);
+            animator.SetBool("isMoving", false);
         }
         else
         {
-            //animator.SetBool("isMoving", true);
+            animator.SetBool("isMoving", true);
         }
     }
 
@@ -103,6 +111,8 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         jumped = true;
         buffered = false;
+        animator.SetBool("jumped", true);
+        animator.SetBool("isFalling", false);
     }
     public void jumpInput(InputAction.CallbackContext context)
     {
@@ -122,6 +132,8 @@ public class PlayerController : MonoBehaviour
         if (context.canceled && rb.velocity.y > 0f)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            animator.SetBool("isFalling", true);
+            animator.SetBool("jumped", false);
         }
     }
 
@@ -149,7 +161,7 @@ public class PlayerController : MonoBehaviour
     }
     private bool isGrounded()
     {
-        return Physics2D.OverlapCircle(groundcheck.position, 0.3f, groundLayer) && rb.velocity.y == 0;
+        return Physics2D.OverlapCircle(groundcheck.position, 0.4f, groundLayer) && Mathf.Abs(rb.velocity.y) <= 0.01f;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -158,13 +170,11 @@ public class PlayerController : MonoBehaviour
         {
             acceleration = groundAcceleration;
             stopSpeed = groundDeceleration;
-            print("Ground");
         }
         if (other.gameObject.CompareTag("Ice"))
         {
             acceleration = iceAcceleration;
             stopSpeed = iceDeceleration;
-            print("Ice");
         }
     }
 
@@ -218,6 +228,5 @@ public class PlayerController : MonoBehaviour
     public void moveInput(InputAction.CallbackContext context)
     {
         horizontal = context.ReadValue<Vector2>().x;
-        print("Input recorded");
     }
 }
