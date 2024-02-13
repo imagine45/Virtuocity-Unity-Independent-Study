@@ -55,6 +55,9 @@ TagManager:
   - name: Decorations
     uniqueID: 3273202299
     locked: 0
+  - name: Player Particles
+    uniqueID: 328833017
+    locked: 0
   - name: Player
     uniqueID: 1075680237
     locked: 0

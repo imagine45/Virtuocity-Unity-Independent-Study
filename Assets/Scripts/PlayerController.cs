@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
     public Transform groundcheck;
     public LayerMask groundLayer;
-    //public ParticleSystem particles;
-    //public ParticleSystem groundSlamParticles;
+    public ParticleSystem particles;
+    public ParticleSystem chargeParticles;
 
     //private int groundSlamParticleCount = 0;
 
@@ -24,8 +24,7 @@ public class PlayerController : MonoBehaviour
     private bool buffered = false;
     private float stopSpeed = 0.2f;
     private float groundSmashSpeed = 25f;
-    private bool canGroundSmash = false;
-    private bool isGroundSmashing = false;
+    private bool charged = false;
 
     private float accelerationCap = 1.0f;
     private float acceleration = 0.1f;
@@ -43,27 +42,33 @@ public class PlayerController : MonoBehaviour
     private int coyoteLimit = 5;
     private bool hasCoyoteTime;
 
+
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
     void Start()
     {
-        
+
     }
 
     private void FixedUpdate()
     {
-        print("is Grounded? " + isGrounded() + "   jumped? " + jumped + "   velocity: " + rb.velocity.y);
+        //dx * speed applied to player velocity
+        rb.velocity = new Vector2(dx * speed, rb.velocity.y);
+
+        if (Mathf.Abs(dx) > 1.5) { chargeParticles.Play(); }
+        else { chargeParticles.Stop(); charged = false; animator.SetFloat("runningSpeed", 1);  }
+
+        hitWall();
         if (isGrounded())
         {
-            //if (isGroundSmashing == true) { groundSlamParticles.Play(); }
-            //groundSlamParticles.particleCount.Equals(0);
 
             animator.SetBool("isFalling", false);
 
             coyoteTimer = 0;
             jumped = false;
             hasCoyoteTime = false;
-            canGroundSmash = true;
-            isGroundSmashing = false;
-            //particles.Stop();
 
             if (buffered)
             {
@@ -79,18 +84,20 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("isFalling", true);
                 animator.SetBool("jumped", false);
             }
-            groundSmashParticleCount();
 
             coyoteTime();
 
             airMovement();
         }
+
+        if (accelerationCap > 1) { accelerationCap -= Mathf.Max(0.02f, accelerationCap - Mathf.Abs(dx)); } else { accelerationCap = 1; }
+        if (Mathf.Abs(dx) > accelerationCap) { dx = accelerationCap * horizontal; }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        rb.velocity = new Vector2(dx * speed, rb.velocity.y);
 
         if (!isFacingRight && horizontal > 0 || isFacingRight && horizontal < 0)
         {
@@ -137,18 +144,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void groundSmashParticleCount()
+    public void chargeInput(InputAction.CallbackContext context)
     {
-        //groundSlamParticles.particleCount.Equals(groundSlamParticles.particleCount + 1);
-    }
-    public void groundSmashInput(InputAction.CallbackContext context)
-    {
-        if (context.performed && !isGrounded() && canGroundSmash)
+        if (context.performed && horizontal != 0)
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - groundSmashSpeed);
-            canGroundSmash = false;
-            isGroundSmashing = true;
-            dx = 0;
+            animator.SetFloat("runningSpeed", 1 + dx / 2);
+            charged = true;
+            accelerationCap += 2;
+            dx = accelerationCap * horizontal;
 
 
             //particles.Play();
@@ -193,20 +196,23 @@ public class PlayerController : MonoBehaviour
         {
             dx -= Mathf.Min(stopSpeed, Mathf.Abs(dx)) * Mathf.Sign(dx);
         }
-        if (Mathf.Abs(dx) > accelerationCap) { dx = accelerationCap * horizontal; }
     }
 
     private void hitWall()
     {
-        if (Physics2D.OverlapCircle(groundcheck.position, 0.3f, groundLayer))
-        {
+        RaycastHit2D leftHit = Physics2D.Raycast(transform.position, (Vector2.left), .4f);
+        RaycastHit2D rightHit = Physics2D.Raycast(transform.position, (Vector2.right), .4f);
 
+        if (leftHit || rightHit)
+        {
+            accelerationCap = 1;
+            dx = 0;
         }
     }
 
     private void airMovement()
     {
-        if (horizontal != 0 && !isGroundSmashing)
+        if (horizontal != 0)
         {
             dx += airAcceleration * horizontal;
         }
@@ -214,7 +220,6 @@ public class PlayerController : MonoBehaviour
         {
             dx -= Mathf.Min(stopSpeed, Mathf.Abs(dx)) * Mathf.Sign(dx);
         }
-        if (Mathf.Abs(dx) > accelerationCap) { dx = accelerationCap * horizontal; }
     }
 
     private void flip()
