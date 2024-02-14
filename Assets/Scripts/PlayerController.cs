@@ -54,6 +54,10 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public float getSpeed ()
+    {
+        return Mathf.Abs(dx);
+    }
     private void FixedUpdate()
     {
         //dx * speed applied to player velocity
@@ -63,6 +67,7 @@ public class PlayerController : MonoBehaviour
         else { chargeParticles.Stop(); charged = false; animator.SetFloat("runningSpeed", 1);  }
 
         hitWall();
+
         if (isGrounded())
         {
 
