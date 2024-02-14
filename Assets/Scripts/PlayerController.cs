@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     public ParticleSystem particles;
     public ParticleSystem chargeParticles;
-
     //private int groundSlamParticleCount = 0;
 
     public Animator animator;
@@ -34,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public float groundDeceleration = 0.2f;
     private float iceAcceleration = 0.02f;
     private float iceDeceleration = 0.005f;
+    private int scaleDivisor = 1;
 
     private float dx = 0f;
     //private float dy = 0f;
@@ -41,6 +41,8 @@ public class PlayerController : MonoBehaviour
     private int coyoteTimer = 0;
     private int coyoteLimit = 5;
     private bool hasCoyoteTime;
+
+    private bool crouching = false;
 
 
     private void Awake()
@@ -200,10 +202,12 @@ public class PlayerController : MonoBehaviour
 
     private void hitWall()
     {
-        RaycastHit2D leftHit = Physics2D.Raycast(transform.position, (Vector2.left), .4f);
-        RaycastHit2D rightHit = Physics2D.Raycast(transform.position, (Vector2.right), .4f);
+        RaycastHit2D leftHitLow = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y-0.2f), (Vector2.left), .4f);
+        RaycastHit2D leftHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.2f), (Vector2.left), .4f);
+        RaycastHit2D rightHitLow = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.2f), (Vector2.right), .4f);
+        RaycastHit2D rightHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.2f), (Vector2.right), .4f);
 
-        if (leftHit || rightHit)
+        if (leftHitLow || rightHitLow || leftHitHigh || rightHitHigh)
         {
             accelerationCap = 1;
             dx = 0;
@@ -233,5 +237,29 @@ public class PlayerController : MonoBehaviour
     public void moveInput(InputAction.CallbackContext context)
     {
         horizontal = context.ReadValue<Vector2>().x;
+    }
+
+    
+
+    public void crouchInput(InputAction.CallbackContext context)
+    {
+        Debug.Log("crouching!");
+        if (context.started && isGrounded())
+        {
+            scaleDivisor = 2;
+            Debug.Log("crouching!");
+            crouching = true;
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / scaleDivisor, transform.localScale.z);
+            GetComponent<BoxCollider2D>().size = new Vector2(GetComponent<BoxCollider2D>().size.x, GetComponent<BoxCollider2D>().size.y / scaleDivisor);
+        }
+        //else{ fastfall ?}
+        if (context.canceled)
+        {
+            Debug.Log("stopped crouching!");
+            crouching = false;
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * scaleDivisor, transform.localScale.z);
+            GetComponent<BoxCollider2D>().size = new Vector2(GetComponent<BoxCollider2D>().size.x, GetComponent<BoxCollider2D>().size.y * scaleDivisor);
+            scaleDivisor = 1;
+        }
     }
 }

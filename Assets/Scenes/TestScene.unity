@@ -171,15 +171,15 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.06339469
     y: 0
-    width: 1
-    height: 1
+    width: 0.87252903
+    height: 0.99862826
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11.25
+  orthographic size: 11.375
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -6725,6 +6725,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: b8fdcd7a-d2fd-4255-a3fe-776d21377e5c
     m_ActionName: Player/Charge[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1915932031}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: crouchInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a5d5158c-8e52-4c05-b07c-9efeff5d8e3e
+    m_ActionName: Player/Crouch[/Keyboard/s,/Keyboard/downArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
