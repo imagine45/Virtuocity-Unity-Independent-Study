@@ -199,7 +199,18 @@
                 },
                 {
                     "name": "",
-                    "id": "43b5465d-ffdd-406d-ad30-c847c3769944",
+                    "id": "c9c11330-8c67-4bf7-8970-0a828621eba3",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Charge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6cd9d271-0ab9-4799-9185-e00061692e0e",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",

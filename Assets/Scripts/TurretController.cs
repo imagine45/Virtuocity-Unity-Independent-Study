@@ -17,6 +17,7 @@ public class TurretController : MonoBehaviour
 
     void FixedUpdate()
     {
+
         angle = Mathf.Atan2(player.transform.position.y - viewPoint.position.y, player.transform.position.x - viewPoint.position.x) * Mathf.Rad2Deg;
         Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, (angle - 90) % 360));
 

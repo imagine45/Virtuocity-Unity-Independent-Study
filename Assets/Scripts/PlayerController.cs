@@ -155,6 +155,8 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed && horizontal != 0)
         {
+            print("Charged");
+
             animator.SetFloat("runningSpeed", 1 + dx / 2);
             charged = true;
             accelerationCap += 2;
@@ -210,8 +212,10 @@ public class PlayerController : MonoBehaviour
         int playerLayer = 9;
         int layerMask = ~(1 << playerLayer);
 
-        RaycastHit2D leftHit = Physics2D.Raycast(transform.position, (Vector2.left), .4f, layerMask);
-        RaycastHit2D rightHit = Physics2D.Raycast(transform.position, (Vector2.right), .4f, layerMask);
+        RaycastHit2D leftHitLow = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.6f), (Vector2.left), .4f, layerMask);
+        RaycastHit2D leftHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.6f), (Vector2.left), .4f, layerMask);
+        RaycastHit2D rightHitLow = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.6f), (Vector2.right), .4f, layerMask);
+        RaycastHit2D rightHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.6f), (Vector2.right), .4f, layerMask);
 
         if (leftHitLow || rightHitLow || leftHitHigh || rightHitHigh)
         {
@@ -249,11 +253,10 @@ public class PlayerController : MonoBehaviour
 
     public void crouchInput(InputAction.CallbackContext context)
     {
-        Debug.Log("crouching!");
         if (context.started && isGrounded())
         {
             scaleDivisor = 2;
-            Debug.Log("crouching!");
+            //Debug.Log("crouching!");
             crouching = true;
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / scaleDivisor, transform.localScale.z);
             GetComponent<BoxCollider2D>().size = new Vector2(GetComponent<BoxCollider2D>().size.x, GetComponent<BoxCollider2D>().size.y / scaleDivisor);
@@ -261,7 +264,7 @@ public class PlayerController : MonoBehaviour
         //else{ fastfall ?}
         if (context.canceled)
         {
-            Debug.Log("stopped crouching!");
+            //Debug.Log("stopped crouching!");
             crouching = false;
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * scaleDivisor, transform.localScale.z);
             GetComponent<BoxCollider2D>().size = new Vector2(GetComponent<BoxCollider2D>().size.x, GetComponent<BoxCollider2D>().size.y * scaleDivisor);
