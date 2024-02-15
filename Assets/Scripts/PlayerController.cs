@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 120;
     }
     void Start()
     {
@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
 
     public float getSpeed ()
     {
-        return Mathf.Abs(dx);
+        return Mathf.Abs(dx); 
     }
     private void FixedUpdate()
     {
@@ -207,10 +207,11 @@ public class PlayerController : MonoBehaviour
 
     private void hitWall()
     {
-        RaycastHit2D leftHitLow = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y-0.2f), (Vector2.left), .4f);
-        RaycastHit2D leftHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.2f), (Vector2.left), .4f);
-        RaycastHit2D rightHitLow = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.2f), (Vector2.right), .4f);
-        RaycastHit2D rightHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.2f), (Vector2.right), .4f);
+        int playerLayer = 9;
+        int layerMask = ~(1 << playerLayer);
+
+        RaycastHit2D leftHit = Physics2D.Raycast(transform.position, (Vector2.left), .4f, layerMask);
+        RaycastHit2D rightHit = Physics2D.Raycast(transform.position, (Vector2.right), .4f, layerMask);
 
         if (leftHitLow || rightHitLow || leftHitHigh || rightHitHigh)
         {
