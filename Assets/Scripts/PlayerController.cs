@@ -22,8 +22,16 @@ public class PlayerController : MonoBehaviour
     private bool jumped = false;
     private bool buffered = false;
     private float stopSpeed = 0.2f;
-    private float groundSmashSpeed = 25f;
     private bool charged = false;
+
+    //the amount of charge given by batteries
+    private float batteryCharge = 2.5f;
+
+    private float chargeMeter;
+    private float chargeMeterCap = 10f;
+
+    //units decreased per second
+    private float chargeDecreaseRate = 1f;
 
     private float accelerationCap = 1.0f;
     private float acceleration = 0.1f;
@@ -44,6 +52,8 @@ public class PlayerController : MonoBehaviour
 
     private bool crouching = false;
 
+    private bool checkpointSet = false;
+    private Vector2 checkpoint;
 
     private void Awake()
     {
@@ -51,7 +61,7 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
-
+        resetCharacter();
     }
 
     public float getSpeed ()
@@ -62,9 +72,13 @@ public class PlayerController : MonoBehaviour
     {
         //dx * speed applied to player velocity
         rb.velocity = new Vector2(dx * speed, rb.velocity.y);
+        animator.SetFloat("runningSpeed", 1 + dx / 2);
 
         if (Mathf.Abs(dx) > 1.5) { chargeParticles.Play(); }
-        else { chargeParticles.Stop(); charged = false; animator.SetFloat("runningSpeed", 1);  }
+        else { chargeParticles.Stop(); charged = false; }
+
+        //natural decrease of the player charge meter
+        chargeDecrease();
 
         hitWall();
 
@@ -104,7 +118,6 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
 
@@ -155,17 +168,12 @@ public class PlayerController : MonoBehaviour
 
     public void chargeInput(InputAction.CallbackContext context)
     {
-        if (context.performed && horizontal != 0)
+        if (context.performed && horizontal != 0 && chargeMeter > 0)
         {
-            print("Charged");
-
-            animator.SetFloat("runningSpeed", 1 + dx / 2);
             charged = true;
             accelerationCap += 2;
             dx = accelerationCap * horizontal;
-
-
-            //particles.Play();
+            chargeMeter -= 2f;
         }
     }
     private void coyoteTime()
@@ -192,9 +200,56 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //for collectibles 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Battery"))
+        {
+            batteryCollect(other.gameObject);
+            StartCoroutine(collectibleRespawn(other, 5));
+        }
+    }
+
     private bool canBuffer()
     {
         return Physics2D.OverlapCircle(groundcheck.position, 0.6f, groundLayer) && rb.velocity.y < 0;
+    }
+
+    private void resetCharacter()
+    {
+        dx = 0;
+        accelerationCap = 1;
+        chargeMeter = 0;
+    }
+
+    IEnumerator collectibleRespawn (Collider2D collision, int time)
+    {
+        yield return new WaitForSeconds(time);
+
+        collision.gameObject.SetActive(true);
+    }
+
+    public void batteryCollect(GameObject other)
+    {
+        chargeMeter += Mathf.Min(batteryCharge, chargeMeterCap - batteryCharge);
+        other.SetActive(false);
+    }
+
+    private void chargeDecrease()
+    {
+        if (chargeMeter <= chargeMeterCap && chargeMeter > 0)
+        {
+            chargeMeter -= chargeDecreaseRate * Time.deltaTime;
+        } else if (chargeMeter <= 0)
+        {
+            chargeMeter = 0;
+        }
+        print(chargeMeter); 
+    }
+
+    private float getCharge()
+    {
+        return chargeMeter;
     }
 
     private void groundMovement()
@@ -251,7 +306,24 @@ public class PlayerController : MonoBehaviour
         horizontal = context.ReadValue<Vector2>().x;
     }
 
-    
+    public void reset(InputAction.CallbackContext context)
+    {
+        if (checkpointSet)
+        {
+            rb.position = checkpoint;
+            resetCharacter();
+        } else
+        {
+            print("No respawn point set");
+        }
+    }
+
+    public void setCheckpoint(InputAction.CallbackContext context)
+    {
+        checkpointSet = true;
+        checkpoint = new Vector2(rb.position.x, rb.position.y);
+        print("respawn set at (" + checkpoint.x + ", " + checkpoint.y + ")");
+    }
 
     public void crouchInput(InputAction.CallbackContext context)
     {
