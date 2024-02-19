@@ -208,6 +208,12 @@ public class PlayerController : MonoBehaviour
             batteryCollect(other.gameObject);
             StartCoroutine(collectibleRespawn(other, 5));
         }
+
+        if (other.gameObject.CompareTag("SpeedBoost"))
+        {
+            speedBoostCollect(other.gameObject);
+            StartCoroutine(collectibleRespawn(other, 5));
+        }
     }
 
     private bool canBuffer()
@@ -234,6 +240,22 @@ public class PlayerController : MonoBehaviour
         chargeMeter += Mathf.Min(batteryCharge, chargeMeterCap - batteryCharge);
         other.SetActive(false);
     }
+
+    public void speedBoostCollect(GameObject other)
+    {
+        accelerationCap += 2;
+        if (isFacingRight)
+        {
+            dx = accelerationCap * 10;
+        }
+        else
+        {
+            dx = accelerationCap * -10;
+        }
+        
+        other.SetActive(false);
+    }
+
 
     private void chargeDecrease()
     {

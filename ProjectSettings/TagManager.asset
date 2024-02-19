@@ -8,6 +8,7 @@ TagManager:
   - Ice
   - Turret
   - Battery
+  - SpeedBoost
   layers:
   - Default
   - TransparentFX
