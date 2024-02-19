@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{8674d53b-04b2-4f80-882e-18ac154cb402}">
+		<property name="name">
+			<value>Time Signature</value>
+		</property>
+		<relationship name="folder">
+			<destination>{cd2085cb-b273-427d-ba52-6bc1f8b64d05}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{c08690d2-9f9c-4bfd-ae38-1ad4223cf43f}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{c08690d2-9f9c-4bfd-ae38-1ad4223cf43f}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>4</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>4_4</value>
+			<value>3_4</value>
+			<value>5_4</value>
+			<value>7_4</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

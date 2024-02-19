@@ -380,8 +380,8 @@ MonoBehaviour:
   switchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: ../../ISGameAudioSystem/ISGameAudioSystem.fspro
-  sourceBankPath: ../../ISGameAudioSystem/Build
+  sourceProjectPath: ISGameAudioSystem/ISGameAudioSystem.fspro
+  sourceBankPath: ISGameAudioSystem/Build
   sourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1
@@ -405,6 +405,7 @@ MonoBehaviour:
   MasterBanks:
   - Master
   Banks:
+  - Music
   - SFX
   BanksToLoad: []
   LiveUpdatePort: 9264

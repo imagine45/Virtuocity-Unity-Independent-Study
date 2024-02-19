@@ -3843,7 +3843,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 571
+      m_Bits: 59
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -8683,7 +8683,7 @@ ParticleSystem:
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 2
     inside: 1
     outside: 0
@@ -10081,13 +10081,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40bf22a05a9f1c040ab577735f4f4c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretShootSound:
-    Guid:
-      Data1: -656383914
-      Data2: 1128878211
-      Data3: 582106297
-      Data4: 296358834
-    Path: event:/TurretShoot
   player: {fileID: 0}
   viewPoint: {fileID: 308731911474038263}
   animator: {fileID: 1470568495}

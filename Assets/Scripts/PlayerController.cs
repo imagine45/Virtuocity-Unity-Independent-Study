@@ -68,6 +68,8 @@ public class PlayerController : MonoBehaviour
 
         hitWall();
 
+        AudioManager.instance.SetMusicIntensity((getSpeed() / 6 >= 1 ? 1 : getSpeed() / 6));
+
         if (isGrounded())
         {
 
