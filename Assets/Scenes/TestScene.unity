@@ -164,14 +164,14 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.059902202
-    width: 0.99999994
-    height: 0.8801956
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11.25
+  orthographic size: 9.642858
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -8962,6 +8962,7 @@ GameObject:
   - component: {fileID: 1751804038}
   - component: {fileID: 1751804037}
   - component: {fileID: 1751804036}
+  - component: {fileID: 1751804039}
   m_Layer: 0
   m_Name: Speed boost
   m_TagString: SpeedBoost
@@ -9062,6 +9063,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1751804039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751804035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd1e3cd9cb5e3344caa5adeebed5c1e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnState: 0
+  directionState: 1
 --- !u!1001 &1851166860
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9069,6 +9084,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8085281581832380422, guid: 06eceff40ec15094ea7b4418a52061ab, type: 3}
+      propertyPath: state
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8224873268555395482, guid: 06eceff40ec15094ea7b4418a52061ab, type: 3}
       propertyPath: m_Name
       value: Battery (2)

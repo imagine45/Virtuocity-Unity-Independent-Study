@@ -74,8 +74,7 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(dx * speed, rb.velocity.y);
         animator.SetFloat("runningSpeed", 1 + dx / 2);
 
-        if (Mathf.Abs(dx) > 1.5) { chargeParticles.Play(); }
-        else { chargeParticles.Stop(); charged = false; }
+        if (Mathf.Abs(dx) <= 1.5) { chargeParticles.Stop(); charged = false; }
 
         //natural decrease of the player charge meter
         chargeDecrease();
@@ -170,6 +169,7 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed && horizontal != 0 && chargeMeter > 0)
         {
+            chargeParticles.Play();
             charged = true;
             accelerationCap += 2;
             dx = accelerationCap * horizontal;
@@ -206,13 +206,13 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Battery"))
         {
             batteryCollect(other.gameObject);
-            StartCoroutine(collectibleRespawn(other, 5));
+            if (other.GetComponent<collectibleBehavior>().getState().Equals("Respawns")) { StartCoroutine(collectibleRespawn(other, 5)); }
         }
 
         if (other.gameObject.CompareTag("SpeedBoost"))
         {
             speedBoostCollect(other.gameObject);
-            StartCoroutine(collectibleRespawn(other, 5));
+            if (other.GetComponent<collectibleBehavior>().getState().Equals("Respawns")) { StartCoroutine(collectibleRespawn(other, 5)); }
         }
     }
 
@@ -243,16 +243,36 @@ public class PlayerController : MonoBehaviour
 
     public void speedBoostCollect(GameObject other)
     {
-        accelerationCap += 2;
-        if (isFacingRight)
+
+        var direction = other.GetComponent<collectibleBehavior>().getDirection();
+        float boostAmount = 3;
+
+        accelerationCap += boostAmount - 1;
+
+        if (direction.Equals("Player"))
         {
-            dx = accelerationCap * 10;
+            if (horizontal > 0)
+            {
+                dx += boostAmount;
+            }
+            else if (horizontal < 0)
+            {
+                dx -= boostAmount;
+            }
+            else
+            {
+                dx += (isFacingRight) ? boostAmount : -boostAmount;
+            }
         }
-        else
-        {
-            dx = accelerationCap * -10;
-        }
-        
+        if (direction.Equals("Right")) { dx += boostAmount; }
+        //if (direction.Equals("Down-right")) { dx += boostAmount; }
+        //if (direction.Equals("Down")) { dx += boostAmount; }
+        //if (direction.Equals("Down-left")) { dx += boostAmount; }
+        if (direction.Equals("Left")) { dx += -boostAmount; }
+        //if (direction.Equals("Up-left")) { dx += boostAmount; }
+        //if (direction.Equals("Up")) { dy += boostAmount; }
+        //if (direction.Equals("Up-right")) { dx += boostAmount; }
+
         other.SetActive(false);
     }
 
