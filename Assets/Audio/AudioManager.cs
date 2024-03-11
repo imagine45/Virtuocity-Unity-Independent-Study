@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     private List<EventInstance> eventInstances;
 
     private EventInstance musicEventInstance;
+    private EventInstance footstepEventInstance;
 
     public static AudioManager instance { get; private set; }
 
@@ -34,6 +35,10 @@ public class AudioManager : MonoBehaviour
         musicEventInstance = CreateInstance(musicEventReference);
         musicEventInstance.start();
     }
+    private void InitializeFootsteps(EventReference footstepEventReference)
+    {
+        footstepEventInstance = CreateInstance(footstepEventReference);
+    }
     public void SetMusicArea(MusicArea area) 
     {
         musicEventInstance.setParameterByName("Time Signature", (float) area);        
@@ -42,6 +47,11 @@ public class AudioManager : MonoBehaviour
     public void SetMusicIntensity(float intensity)
     {
         musicEventInstance.setParameterByName("Song Intensity", intensity);
+    }
+
+    public void SetFootstepType(float ground)
+    {
+        footstepEventInstance.setParameterByName("Ground Type", ground);
     }
 
     public void PlayOneShot(EventReference sound, Vector3 worldPos)

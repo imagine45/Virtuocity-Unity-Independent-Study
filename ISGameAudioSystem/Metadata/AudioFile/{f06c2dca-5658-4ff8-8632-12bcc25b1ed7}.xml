@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{f06c2dca-5658-4ff8-8632-12bcc25b1ed7}">
 		<property name="assetPath">
-			<value>IS Game OST Song 1 - Intense backing percussion.wav</value>
+			<value>Music/IS Game OST Song 1 - Intense backing percussion.wav</value>
 		</property>
 		<property name="isStreaming">
 			<value>true</value>

@@ -10,7 +10,11 @@ public class ParallaxV2 : MonoBehaviour
 
     private Vector2 startPos;
     private PixelPerfectCamera pixelPerfect;
+    private enum axisTracking { X = 0, Y = 1, X_AND_Y = 2}
+    [SerializeField] axisTracking axis;
 
+    public float yDamping = 1f;
+    public float xDamping = 1f;
     private void Start()
     {
         pixelPerfect = Camera.main.GetComponent<PixelPerfectCamera>();
@@ -22,6 +26,7 @@ public class ParallaxV2 : MonoBehaviour
     {
         Vector2 cameraOffset = pixelPerfect.RoundToPixel(arg0.transform.position);
         Vector2 pos = pixelPerfect.RoundToPixel(startPos + cameraOffset * parallaxMult);
-        transform.position = new Vector3(pos.x, pos.y, transform.position.z);
+        transform.position = new Vector3((axis == axisTracking.X || axis == axisTracking.X_AND_Y) ? pos.x * xDamping: transform.position.x,
+            (axis == axisTracking.Y || axis == axisTracking.X_AND_Y) ? pos.y * yDamping: transform.position.y, transform.position.z);
     }
 }

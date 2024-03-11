@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FMOD.Studio;
 
 public class PlayerController : MonoBehaviour
 {
-
     public Rigidbody2D rb;
     public Transform groundcheck;
     public LayerMask groundLayer;
@@ -55,6 +55,9 @@ public class PlayerController : MonoBehaviour
     private bool checkpointSet = false;
     private Vector2 checkpoint;
 
+    //Audio
+    private EventInstance playerFootsteps;
+
     private void Awake()
     {
         Application.targetFrameRate = 120;
@@ -62,6 +65,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         resetCharacter();
+        playerFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.playerFootsteps);
     }
 
     public float getSpeed ()
@@ -72,12 +76,15 @@ public class PlayerController : MonoBehaviour
     {
         //dx * speed applied to player velocity
         rb.velocity = new Vector2(dx * speed, rb.velocity.y);
-        animator.SetFloat("runningSpeed", 1 + dx / 2);
+        animator.SetFloat("runningSpeed", 0.5f + getSpeed() / 2);
 
         if (Mathf.Abs(dx) <= 1.5) { chargeParticles.Stop(); charged = false; }
 
         //natural decrease of the player charge meter
         chargeDecrease();
+
+        //Audio
+        UpdateSound();
 
         hitWall();
 
@@ -188,16 +195,25 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Ground"))
+        if (other.gameObject.CompareTag("Concrete"))
         {
             acceleration = groundAcceleration;
             stopSpeed = groundDeceleration;
+            AudioManager.instance.SetFootstepType((float) GroundType.CONCRETE);
+        }
+        if (other.gameObject.CompareTag("Wood"))
+        {
+            print("yessir");
+            acceleration = groundAcceleration;
+            stopSpeed = groundDeceleration;
+            AudioManager.instance.SetFootstepType((float)GroundType.WOOD);
         }
         if (other.gameObject.CompareTag("Ice"))
         {
             acceleration = iceAcceleration;
             stopSpeed = iceDeceleration;
         }
+
     }
 
     //for collectibles 
@@ -390,6 +406,23 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * scaleDivisor, transform.localScale.z);
             GetComponent<BoxCollider2D>().size = new Vector2(GetComponent<BoxCollider2D>().size.x, GetComponent<BoxCollider2D>().size.y * scaleDivisor);
             scaleDivisor = 1;
+        }
+    }
+
+    private void UpdateSound()
+    {
+        //start footsteps event if the player is moving and on the ground
+        if (dx != 0 && isGrounded())
+        {
+            PLAYBACK_STATE playbackState;
+            playerFootsteps.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                playerFootsteps.start();
+            }
+        } else
+        {
+            playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
         }
     }
 }

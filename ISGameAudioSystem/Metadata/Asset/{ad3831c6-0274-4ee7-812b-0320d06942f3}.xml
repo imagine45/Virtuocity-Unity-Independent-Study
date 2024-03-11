@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="EncodableAsset" id="{ad3831c6-0274-4ee7-812b-0320d06942f3}">
+		<property name="assetPath">
+			<value>Stepping Sounds/Wood/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{e9b8fed8-cef5-482c-b71c-26ebeb4e1b28}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{0803d387-f460-4e56-aa0c-32e116608684}">
+		<property name="assetPath">
+			<value>Stepping Sounds/Concrete/Concrete Steps 3.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.29464852607709752</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{e9b8fed8-cef5-482c-b71c-26ebeb4e1b28}</destination>
+		</relationship>
+	</object>
+</objects>
