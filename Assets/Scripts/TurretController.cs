@@ -23,7 +23,7 @@ public class TurretController : MonoBehaviour
     void FixedUpdate()
     {
 
-        print(shootTimer);
+        //print(shootTimer);
 
         distance = Vector3.Distance(player.transform.position, viewPoint.position);
         angle = (player.transform.position.x - viewPoint.position.x > 0) ? 
@@ -43,7 +43,7 @@ public class TurretController : MonoBehaviour
             shoot();
         }
 
-        print("Shoot timer: " + shootTimer);
+        //print("Shoot timer: " + shootTimer);
     }
 
     private bool canTrack()

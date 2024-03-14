@@ -49,7 +49,7 @@ public class Timer : MonoBehaviour
             beat -= beatInterval;
             beatFull = true;
             beatCountFull++;
-            Debug.Log("tick");
+            //Debug.Log("tick");
         }
 
     }

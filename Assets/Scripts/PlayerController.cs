@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using FMOD.Studio;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -29,6 +30,10 @@ public class PlayerController : MonoBehaviour
 
     private float chargeMeter;
     private float chargeMeterCap = 10f;
+    private int chargeUsage = 2;
+    private float chargeLeniancyTimer = 0f;
+    private float chargeBufferTimer = 0f;
+    private bool chargeBuffer = false; 
 
     //units decreased per second
     private float chargeDecreaseRate = 1f;
@@ -74,6 +79,9 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+
+        print("Horizontal: " + horizontal + "    charge meter: " + chargeMeter);
+
         //dx * speed applied to player velocity
         rb.velocity = new Vector2(dx * speed, rb.velocity.y);
         animator.SetFloat("runningSpeed", 0.5f + getSpeed() / 2);
@@ -86,9 +94,17 @@ public class PlayerController : MonoBehaviour
         //Audio
         UpdateSound();
 
+        //Checks if player hits a wall
         hitWall();
 
+        //Music intensity
         AudioManager.instance.SetMusicIntensity((getSpeed() / 6 >= 1 ? 1 : getSpeed() / 6));
+
+        //Boost direction leniancy
+        if (charged) { chargeDirectionLeniancy(); }
+
+        //Buffer a charge 
+        chargeBufferTime();
 
         if (isGrounded())
         {
@@ -174,15 +190,60 @@ public class PlayerController : MonoBehaviour
 
     public void chargeInput(InputAction.CallbackContext context)
     {
-        if (context.performed && horizontal != 0 && chargeMeter > 0)
+        if (context.performed)
+        {
+            charge();
+        } 
+    }
+
+    private void charge()
+    {
+        if (horizontal != 0 && chargeMeter > 0)
         {
             chargeParticles.Play();
             charged = true;
             accelerationCap += 2;
             dx = accelerationCap * horizontal;
-            chargeMeter -= 2f;
+            chargeMeter -= chargeUsage;
+            chargeLeniancyTimer = 5f;
+            chargeBufferTimer = 0;
+        }
+        else
+        {
+            chargeBufferTimer = 4;
         }
     }
+
+    private void chargeDirectionLeniancy()
+    {
+        if (chargeLeniancyTimer > 0)
+        {
+            if ((dx > 0 && !isFacingRight) || (dx < 0 && isFacingRight))
+            {
+                dx = -dx;
+                print("CHANGED DIRECTION");
+                chargeLeniancyTimer = 0;
+            }
+            chargeLeniancyTimer -= 1f;
+            print(chargeLeniancyTimer);
+        }
+    }
+
+    private void chargeBufferTime()
+    {
+        if (chargeBufferTimer > 0)
+        {
+            if (chargeMeter >= chargeUsage)
+            {
+                chargeBufferTimer = 0;
+                //print("CHARGED AHHHHHHHHHHHHHHH");
+                charge();
+            }
+            chargeBufferTimer -= 1;
+            //print("Buffered   " + chargeMeter);
+        }
+    }
+
     private void coyoteTime()
     {
         if (coyoteTimer < coyoteLimit && !jumped) { coyoteTimer++; }
@@ -307,7 +368,6 @@ public class PlayerController : MonoBehaviour
         {
             chargeMeter = 0;
         }
-        print(chargeMeter); 
     }
 
     private float getCharge()
@@ -378,6 +438,16 @@ public class PlayerController : MonoBehaviour
         } else
         {
             print("No respawn point set");
+        }
+    }
+
+    public void kill()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        resetCharacter();
+        if (checkpointSet)
+        {
+            rb.position = checkpoint;
         }
     }
 

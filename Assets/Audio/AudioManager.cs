@@ -16,18 +16,20 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null)
+        if (instance == null)
         {
-            Debug.LogError("Found more than one Audio Manager in the scene.");
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+            eventInstances = new List<EventInstance>();
+            InitializeMusic(FMODEvents.instance.music);
+        } else
+        {
+            Destroy(gameObject);
         }
-        instance = this;
-
-        eventInstances = new List<EventInstance>();
     }
 
     private void Start()
     {
-        InitializeMusic(FMODEvents.instance.music);
     }
 
     private void InitializeMusic(EventReference musicEventReference)
