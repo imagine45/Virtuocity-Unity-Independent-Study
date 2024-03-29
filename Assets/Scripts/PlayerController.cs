@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
     private float iceDeceleration = 0.005f;
     private int scaleDivisor = 1;
 
+    public bool isDead = false;
+
     private float dx = 0f;
     //private float dy = 0f;
 
@@ -71,6 +73,7 @@ public class PlayerController : MonoBehaviour
     {
         resetCharacter();
         playerFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.playerFootsteps);
+        playerFootsteps.start();
     }
 
     public float getSpeed ()
@@ -80,7 +83,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
 
-        print("Horizontal: " + horizontal + "    charge meter: " + chargeMeter);
+        //print("Horizontal: " + horizontal + "    charge meter: " + chargeMeter);
 
         //dx * speed applied to player velocity
         rb.velocity = new Vector2(dx * speed, rb.velocity.y);
@@ -102,6 +105,9 @@ public class PlayerController : MonoBehaviour
 
         //Boost direction leniancy
         if (charged) { chargeDirectionLeniancy(); }
+
+        //Death transition cue
+        animator.SetBool("isDead", isDead);
 
         //Buffer a charge 
         chargeBufferTime();
@@ -258,23 +264,23 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Concrete"))
         {
-            acceleration = groundAcceleration;
-            stopSpeed = groundDeceleration;
-            AudioManager.instance.SetFootstepType((float) GroundType.CONCRETE);
-        }
-        if (other.gameObject.CompareTag("Wood"))
-        {
             print("yessir");
             acceleration = groundAcceleration;
             stopSpeed = groundDeceleration;
-            AudioManager.instance.SetFootstepType((float)GroundType.WOOD);
+            playerFootsteps.setParameterByName("Ground Type", (float) GroundType.CONCRETE); 
+        }
+        if (other.gameObject.CompareTag("Wood"))
+        {
+            print("nossir");
+            acceleration = groundAcceleration;
+            stopSpeed = groundDeceleration;
+            playerFootsteps.setParameterByName("Ground Type", (float) GroundType.WOOD);
         }
         if (other.gameObject.CompareTag("Ice"))
         {
             acceleration = iceAcceleration;
             stopSpeed = iceDeceleration;
         }
-
     }
 
     //for collectibles 
@@ -305,6 +311,7 @@ public class PlayerController : MonoBehaviour
     }
     private void resetCharacter()
     {
+        playerFootsteps.stop(STOP_MODE.IMMEDIATE);
         dx = 0;
         accelerationCap = 1;
         chargeMeter = 0;
@@ -443,7 +450,8 @@ public class PlayerController : MonoBehaviour
 
     public void kill()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        isDead = true;
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         resetCharacter();
         if (checkpointSet)
         {
@@ -482,17 +490,20 @@ public class PlayerController : MonoBehaviour
     private void UpdateSound()
     {
         //start footsteps event if the player is moving and on the ground
-        if (dx != 0 && isGrounded())
+        if (dx == 0 || !isGrounded())
         {
-            PLAYBACK_STATE playbackState;
+/*            PLAYBACK_STATE playbackState;
             playerFootsteps.getPlaybackState(out playbackState);
             if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
-            {
-                playerFootsteps.start();
+            {*/
+                //playerFootsteps.start();
+                playerFootsteps.setParameterByName("Ground Type", (float)GroundType.NOT_ON_GROUND);
+/*
             }
         } else
         {
-            playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+            //playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+            */
         }
     }
 }

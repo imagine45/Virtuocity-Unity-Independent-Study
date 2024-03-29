@@ -1,6 +1,7 @@
 public enum GroundType
 {
-    CONCRETE = 0,
-    METAL = 1,
-    WOOD = 2
+    NOT_ON_GROUND = 0,
+    CONCRETE = 1,
+    METAL = 2,
+    WOOD = 3
 }
