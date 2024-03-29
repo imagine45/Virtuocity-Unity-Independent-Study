@@ -221,6 +221,11 @@ public class PlayerController : MonoBehaviour
         return Physics2D.OverlapCircle(groundcheck.position, 0.6f, groundLayer) && rb.velocity.y < 0;
     }
 
+    public void respawnCharacter()
+    {
+        transform.position = new Vector3(0, -1, 0);
+        resetCharacter();
+    }
     private void resetCharacter()
     {
         dx = 0;
