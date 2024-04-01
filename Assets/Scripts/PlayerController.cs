@@ -73,7 +73,6 @@ public class PlayerController : MonoBehaviour
     {
         resetCharacter();
         playerFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.playerFootsteps);
-        playerFootsteps.start();
     }
 
     public float getSpeed ()
@@ -84,9 +83,10 @@ public class PlayerController : MonoBehaviour
     {
 
         //print("Horizontal: " + horizontal + "    charge meter: " + chargeMeter);
+        print(dx);
 
         //dx * speed applied to player velocity
-        rb.velocity = new Vector2(dx * speed, rb.velocity.y);
+        if (!isDead) { rb.velocity = new Vector2(dx * speed, rb.velocity.y); }
         animator.SetFloat("runningSpeed", 0.5f + getSpeed() / 2);
 
         if (Mathf.Abs(dx) <= 1.5) { chargeParticles.Stop(); charged = false; }
@@ -105,9 +105,6 @@ public class PlayerController : MonoBehaviour
 
         //Boost direction leniancy
         if (charged) { chargeDirectionLeniancy(); }
-
-        //Death transition cue
-        animator.SetBool("isDead", isDead);
 
         //Buffer a charge 
         chargeBufferTime();
@@ -174,19 +171,19 @@ public class PlayerController : MonoBehaviour
     public void jumpInput(InputAction.CallbackContext context)
     {
         //normal jump
-        if (context.performed && (isGrounded() || hasCoyoteTime))
+        if (context.performed && (isGrounded() || hasCoyoteTime) && !isDead)
         {
             jump();
         }
 
         //buffer jump
-        if (context.performed && !isGrounded() && canBuffer())
+        if (context.performed && !isGrounded() && canBuffer() && !isDead)
         {
             buffered = true;
         }
 
         //cancel jump
-        if (context.canceled && rb.velocity.y > 0f)
+        if (context.canceled && rb.velocity.y > 0f && !isDead)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
             animator.SetBool("isFalling", true);
@@ -196,7 +193,7 @@ public class PlayerController : MonoBehaviour
 
     public void chargeInput(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !isDead)
         {
             charge();
         } 
@@ -227,11 +224,9 @@ public class PlayerController : MonoBehaviour
             if ((dx > 0 && !isFacingRight) || (dx < 0 && isFacingRight))
             {
                 dx = -dx;
-                print("CHANGED DIRECTION");
                 chargeLeniancyTimer = 0;
             }
             chargeLeniancyTimer -= 1f;
-            print(chargeLeniancyTimer);
         }
     }
 
@@ -242,11 +237,9 @@ public class PlayerController : MonoBehaviour
             if (chargeMeter >= chargeUsage)
             {
                 chargeBufferTimer = 0;
-                //print("CHARGED AHHHHHHHHHHHHHHH");
                 charge();
             }
             chargeBufferTimer -= 1;
-            //print("Buffered   " + chargeMeter);
         }
     }
 
@@ -264,14 +257,12 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Concrete"))
         {
-            print("yessir");
             acceleration = groundAcceleration;
             stopSpeed = groundDeceleration;
             playerFootsteps.setParameterByName("Ground Type", (float) GroundType.CONCRETE); 
         }
         if (other.gameObject.CompareTag("Wood"))
         {
-            print("nossir");
             acceleration = groundAcceleration;
             stopSpeed = groundDeceleration;
             playerFootsteps.setParameterByName("Ground Type", (float) GroundType.WOOD);
@@ -312,8 +303,8 @@ public class PlayerController : MonoBehaviour
     private void resetCharacter()
     {
         playerFootsteps.stop(STOP_MODE.IMMEDIATE);
-        dx = 0;
         accelerationCap = 1;
+        dx = 0;
         chargeMeter = 0;
     }
 
@@ -433,7 +424,8 @@ public class PlayerController : MonoBehaviour
 
     public void moveInput(InputAction.CallbackContext context)
     {
-        horizontal = context.ReadValue<Vector2>().x;
+        if (!isDead) { horizontal = context.ReadValue<Vector2>().x; }
+        else { horizontal = 0; }
     }
 
     public void reset(InputAction.CallbackContext context)
@@ -448,15 +440,37 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void kill()
+    IEnumerator deathTransition()
     {
         isDead = true;
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
         resetCharacter();
+        rb.velocity = new Vector2(0, 0);
+
+        //death animation here
+        animator.SetBool("isDead", true);
+
+        //transition animation here...
+        yield return new WaitForSeconds(0.9f);
+            print("Timer 1 passed");
+
         if (checkpointSet)
         {
             rb.position = checkpoint;
         }
+
+        animator.SetBool("isDead", false);
+
+        isDead = false;
+
+        yield return new WaitForSeconds(0.65f);
+            print("Timer 2 passed");
+        //respawn animation here
+    }
+
+    public void kill()
+    {
+        StartCoroutine(deathTransition());
     }
 
     public void setCheckpoint(InputAction.CallbackContext context)
@@ -468,7 +482,7 @@ public class PlayerController : MonoBehaviour
 
     public void crouchInput(InputAction.CallbackContext context)
     {
-        if (context.started && isGrounded())
+        if (context.started && isGrounded() && !isDead)
         {
             scaleDivisor = 2;
             //Debug.Log("crouching!");
@@ -477,7 +491,7 @@ public class PlayerController : MonoBehaviour
             GetComponent<BoxCollider2D>().size = new Vector2(GetComponent<BoxCollider2D>().size.x, GetComponent<BoxCollider2D>().size.y / scaleDivisor);
         }
         //else{ fastfall ?}
-        if (context.canceled)
+        if (context.canceled && !isDead)
         {
             //Debug.Log("stopped crouching!");
             crouching = false;
@@ -489,21 +503,21 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateSound()
     {
-        //start footsteps event if the player is moving and on the ground
-        if (dx == 0 || !isGrounded())
+        PLAYBACK_STATE playbackState;
+        playerFootsteps.getPlaybackState(out playbackState);
+
+        if (dx == 0 || !isGrounded() && !isDead)
         {
-/*            PLAYBACK_STATE playbackState;
-            playerFootsteps.getPlaybackState(out playbackState);
-            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
-            {*/
-                //playerFootsteps.start();
-                playerFootsteps.setParameterByName("Ground Type", (float)GroundType.NOT_ON_GROUND);
-/*
+            if (playbackState.Equals(PLAYBACK_STATE.PLAYING))
+            {
+                playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
             }
-        } else
+        //playerFootsteps.setParameterByName("Ground Type", (float)GroundType.NOT_ON_GROUND);
+        } else if (!isDead)
         {
-            //playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
-            */
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPING) || playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
+                playerFootsteps.start();
+            }
         }
     }
 }
