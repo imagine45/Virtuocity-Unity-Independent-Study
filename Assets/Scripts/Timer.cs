@@ -2,8 +2,22 @@ using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-class Timer : MonoBehaviour
+public class Timer : MonoBehaviour
 {
+    public static Timer instance;
+
+    public int currentBar = 0;
+    public GameObject postProcess;
+
+    public static int lastBeat = 0;
+    public static string lastMarkerString = null;
+
+    public delegate void BeatEventDelegate();
+    public static event BeatEventDelegate beatUpdated;
+
+    public delegate void MarkerListenerDelegate();
+    public static event MarkerListenerDelegate markerUpdated;
+
     class TimelineInfo
     {
         public int CurrentMusicBar = 0;
@@ -78,8 +92,7 @@ class Timer : MonoBehaviour
                 case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT:
                     {
                         var parameter = (FMOD.Studio.TIMELINE_BEAT_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.TIMELINE_BEAT_PROPERTIES));
-                        timelineInfo.CurrentMusicBar = parameter.bar;
-                        print(timelineInfo.CurrentMusicBar);
+                        timelineInfo.CurrentMusicBar = parameter.beat;
                         break;
                     }
                 case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER:
@@ -99,7 +112,28 @@ class Timer : MonoBehaviour
         return FMOD.RESULT.OK;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
+        currentBar = timelineInfo.CurrentMusicBar;
+
+        if (lastMarkerString != timelineInfo.LastMarker) {
+            lastMarkerString = timelineInfo.LastMarker;
+
+            if(markerUpdated != null)
+            {
+                markerUpdated();
+            }
+        }
+
+        if(lastBeat != timelineInfo.CurrentMusicBar)
+        {
+            lastBeat = timelineInfo.CurrentMusicBar;
+
+            if(beatUpdated != null)
+            {
+                beatUpdated();
+            }
+        }
+
     }
 }
