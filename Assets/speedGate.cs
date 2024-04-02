@@ -37,13 +37,9 @@ public class speedGate : MonoBehaviour
 
         if (speed >= openSpeed || isPlayerUnder)
         {
-            print("door open: yes" + "    is player under: " + isPlayerUnder);
-            //transform.position = new Vector3(transform.position.x, initY + 3, 0);
             animator.SetBool("doorOpen", true);
         } else
         {
-            print("door open: no" + "    is player under: " + isPlayerUnder);
-            //transform.position = new Vector3(transform.position.x, initY, 0);
             animator.SetBool("doorOpen", false);
         }
     }

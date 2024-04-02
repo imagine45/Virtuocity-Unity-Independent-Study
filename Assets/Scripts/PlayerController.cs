@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     private bool buffered = false;
     private float stopSpeed = 0.2f;
     private bool charged = false;
+    private int dyCap = 15;
 
     //the amount of charge given by batteries
     private float batteryCharge = 2.5f;
@@ -80,11 +81,16 @@ public class PlayerController : MonoBehaviour
     {
         return Mathf.Abs(dx); 
     }
+
+    public float getCharge ()
+    {
+        return chargeMeter;
+    }
     private void FixedUpdate()
     {
 
         //dx * speed applied to player velocity
-        if (!isDead) { rb.velocity = new Vector2(dx * speed, rb.velocity.y); }
+        if (!isDead) { rb.velocity = new Vector2(dx * speed, Mathf.Sign(rb.velocity.y) * Mathf.Min(Mathf.Abs(rb.velocity.y), dyCap)); }
         animator.SetFloat("runningSpeed", 0.5f + getSpeed() / 2);
 
         if (Mathf.Abs(dx) <= 1.5) { chargeParticles.Stop(); charged = false; }
@@ -316,7 +322,7 @@ public class PlayerController : MonoBehaviour
 
     public void batteryCollect(GameObject other)
     {
-        chargeMeter += Mathf.Min(batteryCharge, chargeMeterCap - batteryCharge);
+        chargeMeter += Mathf.Min(batteryCharge, chargeMeterCap - chargeMeter);
         other.SetActive(false);
     }
 
@@ -358,18 +364,13 @@ public class PlayerController : MonoBehaviour
 
     private void chargeDecrease()
     {
-        if (chargeMeter <= chargeMeterCap && chargeMeter > 0)
+        if (chargeMeter > 0)
         {
             chargeMeter -= chargeDecreaseRate * Time.deltaTime;
         } else if (chargeMeter <= 0)
         {
             chargeMeter = 0;
         }
-    }
-
-    private float getCharge()
-    {
-        return chargeMeter;
     }
 
     private void groundMovement()
@@ -390,14 +391,15 @@ public class PlayerController : MonoBehaviour
         int layerMask = ~(1 << playerLayer);
 
         RaycastHit2D leftHitLow = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.6f), (Vector2.left), .4f, layerMask);
-        RaycastHit2D leftHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.6f), (Vector2.left), .4f, layerMask);
+        RaycastHit2D leftHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.5f), (Vector2.left), .4f, layerMask);
         RaycastHit2D rightHitLow = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.6f), (Vector2.right), .4f, layerMask);
-        RaycastHit2D rightHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.6f), (Vector2.right), .4f, layerMask);
+        RaycastHit2D rightHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.5f), (Vector2.right), .4f, layerMask);
 
         if (leftHitLow || rightHitLow || leftHitHigh || rightHitHigh)
         {
             accelerationCap = 1;
             dx = 0;
+            print("hit");
         }
     }
 
