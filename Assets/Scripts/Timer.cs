@@ -1,56 +1,105 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
-public class Timer : MonoBehaviour
+class Timer : MonoBehaviour
 {
-    private static Timer TimerInstance;
-
-    public float BPM;
-    public float[] timeSignature = new float[2];
-    private float measureInterval, beatInterval;
-    private float measure;
-    private float beat;
-    private bool beatFull, measureFull;
-    private int measureCountFull, beatCountFull;
-
-    private void Awake()
+    class TimelineInfo
     {
-        if (TimerInstance != null && TimerInstance != this)
-        {
-            Destroy(this.gameObject);
-        } else
-        {
-            TimerInstance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
+        public int CurrentMusicBar = 0;
+        public FMOD.StringWrapper LastMarker = new FMOD.StringWrapper();
     }
-    private void FixedUpdate()
+
+    TimelineInfo timelineInfo;
+    GCHandle timelineHandle;
+
+    public FMODUnity.EventReference EventName;
+
+    FMOD.Studio.EVENT_CALLBACK beatCallback;
+    FMOD.Studio.EventInstance musicInstance;
+
+#if UNITY_EDITOR
+    void Reset()
     {
-        measureFull = false;
-        measureInterval = (60 * timeSignature[1]) / BPM;
-        measure += Time.deltaTime;
+        EventName = FMODUnity.EventReference.Find("event:/OST 2");
+    }
+#endif
 
-        if (measure >= measureInterval)
+    void Start()
+    {
+        timelineInfo = new TimelineInfo();
+
+        // Explicitly create the delegate object and assign it to a member so it doesn't get freed
+        // by the garbage collected while it's being used
+        beatCallback = new FMOD.Studio.EVENT_CALLBACK(BeatEventCallback);
+
+        musicInstance = FMODUnity.RuntimeManager.CreateInstance(EventName);
+
+        // Pin the class that will store the data modified during the callback
+        timelineHandle = GCHandle.Alloc(timelineInfo);
+        // Pass the object through the userdata of the instance
+        musicInstance.setUserData(GCHandle.ToIntPtr(timelineHandle));
+
+        musicInstance.setCallback(beatCallback, FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT | FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER);
+        musicInstance.start();
+    }
+
+    void OnDestroy()
+    {
+        musicInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        musicInstance.release();
+    }
+
+    void OnGUI()
+    {
+        GUILayout.Box(String.Format("Current Bar = {0}, Last Marker = {1}", timelineInfo.CurrentMusicBar, (string)timelineInfo.LastMarker));
+    }
+
+    [AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
+    static FMOD.RESULT BeatEventCallback(FMOD.Studio.EVENT_CALLBACK_TYPE type, IntPtr instancePtr, IntPtr parameterPtr)
+    {
+        FMOD.Studio.EventInstance instance = new FMOD.Studio.EventInstance(instancePtr);
+
+        // Retrieve the user data
+        IntPtr timelineInfoPtr;
+        FMOD.RESULT result = instance.getUserData(out timelineInfoPtr);
+        if (result != FMOD.RESULT.OK)
         {
-            measure -= measureInterval;
-            measureFull = true;
-            measureCountFull++;
-            //Debug.Log("beat");
-            //beat -= beatInterval;
+            Debug.LogError("Timeline Callback error: " + result);
         }
-
-        beatFull = false;
-        beatInterval = 60 / (BPM * timeSignature[0]);
-        beat += Time.deltaTime;
-
-        if (beat >= beatInterval)
+        else if (timelineInfoPtr != IntPtr.Zero)
         {
-            beat -= beatInterval;
-            beatFull = true;
-            beatCountFull++;
-            //Debug.Log("tick");
-        }
+            // Get the object to store beat and marker details
+            GCHandle timelineHandle = GCHandle.FromIntPtr(timelineInfoPtr);
+            TimelineInfo timelineInfo = (TimelineInfo)timelineHandle.Target;
 
+            switch (type)
+            {
+                case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT:
+                    {
+                        var parameter = (FMOD.Studio.TIMELINE_BEAT_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.TIMELINE_BEAT_PROPERTIES));
+                        timelineInfo.CurrentMusicBar = parameter.bar;
+                        print(timelineInfo.CurrentMusicBar);
+                        break;
+                    }
+                case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER:
+                    {
+                        var parameter = (FMOD.Studio.TIMELINE_MARKER_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.TIMELINE_MARKER_PROPERTIES));
+                        timelineInfo.LastMarker = parameter.name;
+                        break;
+                    }
+                case FMOD.Studio.EVENT_CALLBACK_TYPE.DESTROYED:
+                    {
+                        // Now the event has been destroyed, unpin the timeline memory so it can be garbage collected
+                        timelineHandle.Free();
+                        break;
+                    }
+            }
+        }
+        return FMOD.RESULT.OK;
+    }
+
+    private void Update()
+    {
     }
 }

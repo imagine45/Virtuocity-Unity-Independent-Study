@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     public ParticleSystem particles;
     public ParticleSystem chargeParticles;
+    public ParticleSystem chargeExplosion;
     //private int groundSlamParticleCount = 0;
 
     public Animator animator;
@@ -81,9 +82,6 @@ public class PlayerController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-
-        //print("Horizontal: " + horizontal + "    charge meter: " + chargeMeter);
-        print(dx);
 
         //dx * speed applied to player velocity
         if (!isDead) { rb.velocity = new Vector2(dx * speed, rb.velocity.y); }
@@ -204,6 +202,7 @@ public class PlayerController : MonoBehaviour
         if (horizontal != 0 && chargeMeter > 0)
         {
             chargeParticles.Play();
+            chargeExplosion.Play();
             charged = true;
             accelerationCap += 2;
             dx = accelerationCap * horizontal;
@@ -416,6 +415,8 @@ public class PlayerController : MonoBehaviour
 
     private void flip()
     {
+        ParticleSystemRenderer explosionRenderer = chargeExplosion.GetComponent<ParticleSystemRenderer>();
+        explosionRenderer.flip = new Vector3((explosionRenderer.flip.x == 0) ? 1 : 0, 0, 0);
         isFacingRight = !isFacingRight;
         Vector3 localScale = transform.localScale;
         localScale.x *= -1f;

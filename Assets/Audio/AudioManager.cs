@@ -21,7 +21,7 @@ public class AudioManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
             eventInstances = new List<EventInstance>();
-            InitializeMusic(FMODEvents.instance.music);
+            //InitializeMusic(FMODEvents.instance.music);
         } else
         {
             Destroy(gameObject);
