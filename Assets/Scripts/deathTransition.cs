@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Security.Cryptography;
 using UnityEngine;
 
-public class deathTransition : MonoBehaviour
+public class DeathTransition : MonoBehaviour
 {
-    [SerializeField] GameObject player;
+    
+    public GameObject player;
     public Animator animator;
-
-
+    
     void Update()
     {
-
         animator.SetBool("isDead", player.GetComponent<PlayerController>().isDead);
-        
     }
+    
 }
