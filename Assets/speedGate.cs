@@ -33,8 +33,6 @@ public class speedGate : MonoBehaviour
             isPlayerUnder = false;
         }
 
-        print(isPlayerUnder);
-
         if (speed >= openSpeed || isPlayerUnder)
         {
             animator.SetBool("doorOpen", true);

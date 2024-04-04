@@ -6,7 +6,7 @@ public class Timer : MonoBehaviour
 {
     public static Timer instance;
 
-    public int currentBar = 0;
+    public int currentBeat = 0;
     public GameObject postProcess;
 
     public static int lastBeat = 0;
@@ -20,7 +20,7 @@ public class Timer : MonoBehaviour
 
     class TimelineInfo
     {
-        public int CurrentMusicBar = 0;
+        public int CurrentMusicBeat = 0;
         public FMOD.StringWrapper LastMarker = new FMOD.StringWrapper();
     }
 
@@ -66,7 +66,7 @@ public class Timer : MonoBehaviour
 
     void OnGUI()
     {
-        GUILayout.Box(String.Format("Current Bar = {0}, Last Marker = {1}", timelineInfo.CurrentMusicBar, (string)timelineInfo.LastMarker));
+        GUILayout.Box(String.Format("Current Bar = {0}, Last Marker = {1}", timelineInfo.CurrentMusicBeat, (string)timelineInfo.LastMarker));
     }
 
     [AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
@@ -92,7 +92,7 @@ public class Timer : MonoBehaviour
                 case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT:
                     {
                         var parameter = (FMOD.Studio.TIMELINE_BEAT_PROPERTIES)Marshal.PtrToStructure(parameterPtr, typeof(FMOD.Studio.TIMELINE_BEAT_PROPERTIES));
-                        timelineInfo.CurrentMusicBar = parameter.beat;
+                        timelineInfo.CurrentMusicBeat = parameter.beat;
                         break;
                     }
                 case FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER:
@@ -114,7 +114,7 @@ public class Timer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        currentBar = timelineInfo.CurrentMusicBar;
+        currentBeat = timelineInfo.CurrentMusicBeat;
 
         if (lastMarkerString != timelineInfo.LastMarker) {
             lastMarkerString = timelineInfo.LastMarker;
@@ -125,9 +125,9 @@ public class Timer : MonoBehaviour
             }
         }
 
-        if(lastBeat != timelineInfo.CurrentMusicBar)
+        if(lastBeat != timelineInfo.CurrentMusicBeat)
         {
-            lastBeat = timelineInfo.CurrentMusicBar;
+            lastBeat = timelineInfo.CurrentMusicBeat;
 
             if(beatUpdated != null)
             {

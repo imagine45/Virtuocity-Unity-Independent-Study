@@ -19,7 +19,7 @@ public class BeatTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bar = timer.GetComponent<Timer>().currentBar;
+        bar = timer.GetComponent<Timer>().currentBeat;
         canvasText.text = "Current Bar: " + bar;
     }
 }

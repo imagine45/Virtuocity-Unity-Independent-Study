@@ -10,6 +10,7 @@ public class DeathTransition : MonoBehaviour
     public GameObject player;
     public Animator animator;
     
+    
     void Update()
     {
         animator.SetBool("isDead", player.GetComponent<PlayerController>().isDead);

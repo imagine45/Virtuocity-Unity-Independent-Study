@@ -209,6 +209,7 @@ public class PlayerController : MonoBehaviour
         {
             chargeParticles.Play();
             chargeExplosion.Play();
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Player Boost");
             charged = true;
             accelerationCap += 2;
             dx = accelerationCap * horizontal;
@@ -220,6 +221,12 @@ public class PlayerController : MonoBehaviour
         {
             chargeBufferTimer = 4;
         }
+    }
+
+    public void speedBlockBoost (int direction)
+    {
+        accelerationCap += 2;
+        dx = accelerationCap * ((direction == 0) ? 1 : -1);
     }
 
     private void chargeDirectionLeniancy()
@@ -285,6 +292,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Battery"))
         {
             batteryCollect(other.gameObject);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Collectibles/Battery/Battery Collect");
             if (other.GetComponent<collectibleBehavior>().getState().Equals("Respawns")) { StartCoroutine(collectibleRespawn(other, 5)); }
         }
 
@@ -399,7 +407,6 @@ public class PlayerController : MonoBehaviour
         {
             accelerationCap = 1;
             dx = 0;
-            print("hit");
         }
     }
 
@@ -446,6 +453,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator deathTransition()
     {
         isDead = true;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Player Killed");
 
         resetCharacter();
         rb.velocity = new Vector2(0, 0);
@@ -465,6 +473,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isDead", false);
 
         isDead = false;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Player Respawn");
 
         yield return new WaitForSeconds(0.65f);
             print("Timer 2 passed");
