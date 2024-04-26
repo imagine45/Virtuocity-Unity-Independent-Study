@@ -407,6 +407,7 @@ public class PlayerController : MonoBehaviour
         {
             accelerationCap = 1;
             dx = 0;
+            Debug.Log("bruh");
         }
     }
 
