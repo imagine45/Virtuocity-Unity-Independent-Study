@@ -10,8 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3359940013760006871}
   - component: {fileID: 8619878490032021334}
-  - component: {fileID: 8619878490032021336}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Streetlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +72,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1021764997
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 73498b2c86160e846823d20b83fa8145, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -86,20 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8619878490032021336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7075628450087844268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ababa2494a433b84e858f3f049c41be3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cam: {fileID: 0}
-  player: {fileID: 0}
 --- !u!1 &8619878490974741025
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8619878490974741026}
   - component: {fileID: 8619878490974741027}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}

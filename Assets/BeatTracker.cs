@@ -7,13 +7,13 @@ public class BeatTracker : MonoBehaviour
 {
 
     public TMP_Text canvasText;
-    public GameObject timer;
+    private GameObject timer;
     private int bar;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        timer = GameObject.Find("FMODEvents");
     }
 
     // Update is called once per frame

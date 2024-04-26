@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class speedGate : MonoBehaviour
 {
-    public GameObject player;
+    private GameObject player;
     public Animator animator;
     public float openSpeed = 1;
     private float initY;
@@ -15,6 +15,7 @@ public class speedGate : MonoBehaviour
 
     private void Awake()
     {
+        player = GameObject.Find("Player");
         initY = transform.position.y - 3;
     }
 

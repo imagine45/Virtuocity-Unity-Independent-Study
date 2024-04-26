@@ -64,6 +64,8 @@ public class PlayerController : MonoBehaviour
     private bool checkpointSet = false;
     private Vector2 checkpoint;
 
+    public bool isPaused = false;
+
     //Audio
     private EventInstance playerFootsteps;
 
@@ -175,19 +177,19 @@ public class PlayerController : MonoBehaviour
     public void jumpInput(InputAction.CallbackContext context)
     {
         //normal jump
-        if (context.performed && (isGrounded() || hasCoyoteTime) && !isDead)
+        if (context.performed && (isGrounded() || hasCoyoteTime) && !isDead && !isPaused)
         {
             jump();
         }
 
         //buffer jump
-        if (context.performed && !isGrounded() && canBuffer() && !isDead)
+        if (context.performed && !isGrounded() && canBuffer() && !isDead && !isPaused)
         {
             buffered = true;
         }
 
         //cancel jump
-        if (context.canceled && rb.velocity.y > 0f && !isDead)
+        if (context.canceled && rb.velocity.y > 0f && !isDead && !isPaused)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
             animator.SetBool("isFalling", true);
@@ -197,7 +199,7 @@ public class PlayerController : MonoBehaviour
 
     public void chargeInput(InputAction.CallbackContext context)
     {
-        if (context.performed && !isDead)
+        if (context.performed && !isDead && !isPaused)
         {
             charge();
         } 
@@ -257,7 +259,7 @@ public class PlayerController : MonoBehaviour
 
     private void coyoteTime()
     {
-        if (coyoteTimer < coyoteLimit && !jumped) { coyoteTimer++; }
+        if (coyoteTimer < coyoteLimit && !jumped && !isPaused) { coyoteTimer++; }
         hasCoyoteTime = coyoteTimer < coyoteLimit && !jumped;
     }
     private bool isGrounded()
@@ -407,7 +409,6 @@ public class PlayerController : MonoBehaviour
         {
             accelerationCap = 1;
             dx = 0;
-            Debug.Log("bruh");
         }
     }
 
@@ -524,7 +525,7 @@ public class PlayerController : MonoBehaviour
         PLAYBACK_STATE playbackState;
         playerFootsteps.getPlaybackState(out playbackState);
 
-        if (dx == 0 || !isGrounded() && !isDead)
+        if (dx == 0 || !isGrounded() && !isDead && !isPaused)
         {
             if (playbackState.Equals(PLAYBACK_STATE.PLAYING))
             {
