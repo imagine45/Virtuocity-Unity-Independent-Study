@@ -487,8 +487,13 @@ public class PlayerController : MonoBehaviour
 
     public void setCheckpoint(InputAction.CallbackContext context)
     {
+        changeCheckpoint(new Vector2(rb.position.x, rb.position.y));
+    }
+
+    public void changeCheckpoint(Vector2 pos)
+    {
         checkpointSet = true;
-        checkpoint = new Vector2(rb.position.x, rb.position.y);
+        checkpoint = pos;
         print("respawn set at (" + checkpoint.x + ", " + checkpoint.y + ")");
     }
 
