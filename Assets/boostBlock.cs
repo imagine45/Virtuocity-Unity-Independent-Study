@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class boostBlock : MonoBehaviour
 {
-    public GameObject timer;
-    public GameObject player;
+    private GameObject timer;
+    private GameObject player;
     private bool playerOn = false;
 
     private enum directions { RIGHT, LEFT = 1 }
@@ -13,8 +13,9 @@ public class boostBlock : MonoBehaviour
 
     private void Awake()
     {
+        timer = GameObject.Find("FMODEvents");
+        player = GameObject.Find("Player");
         Timer.beatUpdated += boost;
-        print((int)direction);
     }
 
     private void OnDestroy()
@@ -24,7 +25,7 @@ public class boostBlock : MonoBehaviour
 
     private void boost()
     {
-        if (timer.GetComponent<Timer>().currentBeat == 3)
+        if (timer.GetComponent<Timer>().currentBeat == 1)
         {
             print("Boost w/ player");
             this.GetComponent<Animator>().SetTrigger("Boost");

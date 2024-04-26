@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 748484147743414559}
   - component: {fileID: 748484147743414528}
   m_Layer: 3
-  m_Name: Boost Block_0
+  m_Name: BoostBlockLeft
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,12 +77,12 @@ SpriteRenderer:
   m_SortingLayerID: 1075680237
   m_SortingLayer: 7
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1644738509, guid: 38f7d32d4da00e747ab67b9eab499065, type: 3}
+  m_Sprite: {fileID: -784985926, guid: c25d825db4b3a954093a462070d793f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3, y: 1}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -100,8 +100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0245d1a8a344bf64ab972e1c4ad6a757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: {fileID: 0}
-  player: {fileID: 0}
   direction: 0
 --- !u!95 &748484147743414532
 Animator:
@@ -161,8 +159,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3, y: 1}
-    newSize: {x: 3, y: 1}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0

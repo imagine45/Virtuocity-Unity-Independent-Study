@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 38f7d32d4da00e747ab67b9eab499065
+guid: 9d389526c957a1943913ee94f45a5617
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -104,12 +104,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Boost Block_0
+      name: BoostBlockRight_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 24
+        width: 8
         height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -118,19 +118,61 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 20cb1c4e068a9d64fa4406aaa477cb92
-      internalID: -1644738509
+      spriteID: 051217d8af60a564f851f547256f9c79
+      internalID: -1584310437
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Boost Block_1
+      name: BoostBlockRight_1
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 0
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e056f9e788d8a742b472e0f3c958b33
+      internalID: 82727141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoostBlockRight_2
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c1890781d0470245a531e6a7769eb80
+      internalID: -230841207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoostBlockRight_3
       rect:
         serializedVersion: 2
         x: 24
         y: 0
-        width: 24
+        width: 8
         height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -139,19 +181,61 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b4e71d78030adbb46853018568bdeb2c
-      internalID: -1016870921
+      spriteID: 74329b6d574ee3d4593aa746fab7a2f9
+      internalID: -177675512
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Boost Block_2
+      name: BoostBlockRight_4
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a16dd36a6fe786418502dbf3d476a33
+      internalID: -117768690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoostBlockRight_5
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 0
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16e927db86f98fb4180de512f1cbda0b
+      internalID: 1195210079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoostBlockRight_6
       rect:
         serializedVersion: 2
         x: 48
         y: 0
-        width: 24
+        width: 8
         height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -160,19 +244,61 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 250c894131ef3a347a3ca8a41e0a7773
-      internalID: -669058501
+      spriteID: 3a6f0f0aea25510438e6912718a297a5
+      internalID: -1669508129
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Boost Block_3
+      name: BoostBlockRight_7
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 0
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfdd7ce575a74734d97485db10a0b85c
+      internalID: -1301119408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoostBlockRight_8
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9edd06d6d5603c043b926c1961d835ef
+      internalID: 964330889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoostBlockRight_9
       rect:
         serializedVersion: 2
         x: 72
         y: 0
-        width: 24
+        width: 8
         height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -181,19 +307,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ab7a2b8afabf68944a839c34e571afb4
-      internalID: 830436775
+      spriteID: c619dcea26b5ef64c999cb281a317f04
+      internalID: -860687373
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Boost Block_4
+      name: BoostBlockRight_10
       rect:
         serializedVersion: 2
-        x: 96
+        x: 80
         y: 0
-        width: 24
+        width: 8
         height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -202,19 +328,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6d416d540984f434685a0fcbeb92ea62
-      internalID: 909640206
+      spriteID: d693ae12e45a1ad489158b5031fc71b2
+      internalID: -1328289740
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Boost Block_5
+      name: BoostBlockRight_11
       rect:
         serializedVersion: 2
-        x: 120
+        x: 88
         y: 0
-        width: 24
+        width: 8
         height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -223,134 +349,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 860dc645f4efc6749a5471a27f35522d
-      internalID: 934677309
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boost Block_6
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 0
-        width: 24
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 30691b64e2b11774fb67e0bc3bb4c5b1
-      internalID: 324499441
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boost Block_7
-      rect:
-        serializedVersion: 2
-        x: 168
-        y: 0
-        width: 24
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3363def1f93fa594a883303059776ee8
-      internalID: 294871151
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boost Block_8
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 0
-        width: 24
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1458120c0368d3e42b64b816f7739787
-      internalID: 1899157008
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boost Block_9
-      rect:
-        serializedVersion: 2
-        x: 216
-        y: 0
-        width: 24
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5a44264399bf0c24f850b963dc5f45f8
-      internalID: 1423642854
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boost Block_10
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 0
-        width: 24
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f7f5e834cc599eb47877b3d3cd580ba0
-      internalID: -147265160
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Boost Block_11
-      rect:
-        serializedVersion: 2
-        x: 264
-        y: 0
-        width: 24
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 10ffadce813d68f429f5daf59d56f5af
-      internalID: 385319422
+      spriteID: 8180eda416df3544d839fd5f117ed023
+      internalID: -912850695
       vertices: []
       indices: 
       edges: []
@@ -366,18 +366,18 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Boost Block_1: -1016870921
-      Boost Block_7: 294871151
-      Boost Block_4: 909640206
-      Boost Block_2: -669058501
-      Boost Block_0: -1644738509
-      Boost Block_5: 934677309
-      Boost Block_3: 830436775
-      Boost Block_6: 324499441
-      Boost Block_10: -147265160
-      Boost Block_9: 1423642854
-      Boost Block_11: 385319422
-      Boost Block_8: 1899157008
+      BoostBlockRight_10: -1328289740
+      BoostBlockRight_8: 964330889
+      BoostBlockRight_9: -860687373
+      BoostBlockRight_0: -1584310437
+      BoostBlockRight_1: 82727141
+      BoostBlockRight_4: -117768690
+      BoostBlockRight_2: -230841207
+      BoostBlockRight_3: -177675512
+      BoostBlockRight_6: -1669508129
+      BoostBlockRight_7: -1301119408
+      BoostBlockRight_5: 1195210079
+      BoostBlockRight_11: -912850695
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
