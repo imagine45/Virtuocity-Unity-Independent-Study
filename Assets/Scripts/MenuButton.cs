@@ -6,17 +6,15 @@ using TMPro;
 
 public class MenuButton : MonoBehaviour
 {
-    public GameObject titleScreen;
-    public GameObject optionsScreen;
-    public GameObject displayScreen;
-    public GameObject audioScreen;
+    public GameObject screenA;
+    public GameObject screenB;
     public TMP_Dropdown resDropDown;
     public TMP_Dropdown fullscreenDropDown;
 
     private bool isFullScreen = true;
     public void loadFirstScene()
     {
-        SceneManager.LoadScene("TestScene");
+        SceneManager.LoadScene("Tutorial Scene");
     }
 
     public void Start()
@@ -28,39 +26,10 @@ public class MenuButton : MonoBehaviour
                 
     }
 
-    public void goToOptions()
+    public void goTo()
     {
-        titleScreen.SetActive(false);
-        optionsScreen.SetActive(true);
-    }
-
-    public void goToTitle()
-    {
-        optionsScreen.SetActive(false);
-        titleScreen.SetActive(true);
-    }
-
-    public void goToDisplay()
-    {
-        optionsScreen.SetActive(false);
-        displayScreen.SetActive(true);
-    }
-    public void goToOptionsD()
-    {
-        displayScreen.SetActive(false);
-        optionsScreen.SetActive(true);
-    }
-
-    public void goToAudio()
-    {
-        optionsScreen.SetActive(false);
-        audioScreen.SetActive(true);
-    }
-
-    public void goToOptionsA()
-    {
-        audioScreen.SetActive(false);
-        optionsScreen.SetActive(true);
+        screenA.SetActive(false);
+        screenB.SetActive(true);
     }
 
     public void dropDownValueChange()
