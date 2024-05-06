@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        if (!isFacingRight && horizontal > 0 || isFacingRight && horizontal < 0)
+        if (!isFacingRight && horizontal > 0 || isFacingRight && horizontal < 0 && !isPaused)
         {
             flip();
         }

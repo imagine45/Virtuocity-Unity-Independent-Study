@@ -217,8 +217,19 @@
                 },
                 {
                     "name": "",
-                    "id": "c9c11330-8c67-4bf7-8970-0a828621eba3",
+                    "id": "a6672930-f93b-44e0-be64-9287c818a33c",
                     "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c9c11330-8c67-4bf7-8970-0a828621eba3",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -229,7 +240,7 @@
                 {
                     "name": "",
                     "id": "6cd9d271-0ab9-4799-9185-e00061692e0e",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
