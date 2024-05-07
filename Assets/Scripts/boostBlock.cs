@@ -27,7 +27,6 @@ public class boostBlock : MonoBehaviour
     {
         if (timer.GetComponent<Timer>().currentBeat == 1)
         {
-            print("Boost w/ player");
             this.GetComponent<Animator>().SetTrigger("Boost");
 
             if (playerOn)
@@ -42,6 +41,7 @@ public class boostBlock : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             playerOn = true;
+            player.GetComponent<PlayerController>().speedBlockIdle((int)direction, true);
         }
     }
 
@@ -50,6 +50,7 @@ public class boostBlock : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             playerOn = false;
+            player.GetComponent<PlayerController>().speedBlockIdle((int)direction, false);
         }
     }
 }

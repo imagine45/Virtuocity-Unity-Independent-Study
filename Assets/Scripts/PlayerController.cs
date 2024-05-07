@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private float stopSpeed = 0.2f;
     private bool charged = false;
     private int dyCap = 15;
+    private int onSpeedBlock;
 
     //the amount of charge given by batteries
     private float batteryCharge = 2.5f;
@@ -48,7 +49,6 @@ public class PlayerController : MonoBehaviour
     public float groundDeceleration = 0.2f;
     private float iceAcceleration = 0.02f;
     private float iceDeceleration = 0.005f;
-    private int scaleDivisor = 1;
 
     public bool isDead = false;
 
@@ -60,6 +60,8 @@ public class PlayerController : MonoBehaviour
     private bool hasCoyoteTime;
 
     private bool crouching = false;
+    private bool fastFalling = false;
+    private bool waitToUncrouch = false;
 
     private bool checkpointSet = false;
     private Vector2 checkpoint;
@@ -91,8 +93,12 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
 
+        canStand();
+
         //dx * speed applied to player velocity
-        if (!isDead) { rb.velocity = new Vector2(dx * speed, Mathf.Sign(rb.velocity.y) * Mathf.Min(Mathf.Abs(rb.velocity.y), dyCap)); }
+        if (!isDead) { rb.velocity = new Vector2(dx * speed + onSpeedBlock, Mathf.Sign(rb.velocity.y) * Mathf.Min(Mathf.Abs(rb.velocity.y), dyCap)); }
+        else { rb.velocity = new Vector2(0, 0); }
+
         animator.SetFloat("runningSpeed", 0.5f + getSpeed() / 2);
 
         if (Mathf.Abs(dx) <= 1.5) { chargeParticles.Stop(); charged = false; }
@@ -119,10 +125,22 @@ public class PlayerController : MonoBehaviour
         {
 
             animator.SetBool("isFalling", false);
+            animator.SetBool("isFastFalling", false);
 
             coyoteTimer = 0;
             jumped = false;
             hasCoyoteTime = false;
+
+            if (waitToUncrouch)
+            {
+                if (canStand())
+                {
+                    animator.SetBool("isCrouched", false);
+                    crouching = false;
+                    fastFalling = false;
+                    waitToUncrouch = false;
+                }
+            }
 
             if (buffered)
             {
@@ -231,6 +249,11 @@ public class PlayerController : MonoBehaviour
         dx = accelerationCap * ((direction == 0) ? 1 : -1);
     }
 
+    public void speedBlockIdle(int direction, bool isOn)
+    {
+        onSpeedBlock = (isOn ? (direction == 0 ? 1 : -1) : 0);
+    }
+
     private void chargeDirectionLeniancy()
     {
         if (chargeLeniancyTimer > 0)
@@ -267,6 +290,17 @@ public class PlayerController : MonoBehaviour
         return Physics2D.OverlapCircle(groundcheck.position, 0.4f, groundLayer) && Mathf.Abs(rb.velocity.y) <= 0.01f;
     }
 
+    private bool canStand()
+    {
+        int playerLayer = 9;
+        int layerMask = ~(1 << playerLayer);
+
+        RaycastHit2D topHitLeft = Physics2D.Raycast(new Vector2(transform.position.x - 0.25f, transform.position.y - 0.2f), (Vector2.up), 0.9f, layerMask);
+        RaycastHit2D topHitRight = Physics2D.Raycast(new Vector2(transform.position.x + 0.25f, transform.position.y - 0.2f), (Vector2.up), 0.9f, layerMask);
+
+        return !(topHitLeft || topHitRight);
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Concrete"))
@@ -285,6 +319,20 @@ public class PlayerController : MonoBehaviour
         {
             acceleration = iceAcceleration;
             stopSpeed = iceDeceleration;
+        }
+        if (other.gameObject.CompareTag("SpeedBoost"))
+        {
+            acceleration = groundAcceleration;
+            stopSpeed = groundDeceleration;
+            Debug.Log("on Speed Boost");
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("SpeedBoost"))
+        {
+            Debug.Log("off Speed Boost");
         }
     }
 
@@ -401,9 +449,9 @@ public class PlayerController : MonoBehaviour
         int layerMask = ~(1 << playerLayer);
 
         RaycastHit2D leftHitLow = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.6f), (Vector2.left), .4f, layerMask);
-        RaycastHit2D leftHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.5f), (Vector2.left), .4f, layerMask);
+        RaycastHit2D leftHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + ((isGrounded() && crouching) ? -0.2f : 0.5f)), (Vector2.left), .4f, layerMask);
         RaycastHit2D rightHitLow = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.6f), (Vector2.right), .4f, layerMask);
-        RaycastHit2D rightHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 0.5f), (Vector2.right), .4f, layerMask);
+        RaycastHit2D rightHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + ((isGrounded() && crouching) ? -0.2f : 0.5f)), (Vector2.right), .4f, layerMask);
 
         if (leftHitLow || rightHitLow || leftHitHigh || rightHitHigh)
         {
@@ -452,9 +500,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator deathTransition()
+    public void setDead ()
     {
         isDead = true;
+    }
+    public void setAlive ()
+    {
+        isDead = false;
+    }
+
+    IEnumerator deathTransition()
+    {
+        setDead();
         FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Player Killed");
 
         resetCharacter();
@@ -473,8 +530,8 @@ public class PlayerController : MonoBehaviour
         }
 
         animator.SetBool("isDead", false);
+        setAlive();
 
-        isDead = false;
         FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Player Respawn");
 
         yield return new WaitForSeconds(0.65f);
@@ -501,22 +558,33 @@ public class PlayerController : MonoBehaviour
 
     public void crouchInput(InputAction.CallbackContext context)
     {
-        if (context.started && isGrounded() && !isDead)
+        if (context.started && !isDead)
         {
-            scaleDivisor = 2;
-            //Debug.Log("crouching!");
+            animator.SetBool("isCrouched", true);
+
             crouching = true;
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / scaleDivisor, transform.localScale.z);
-            GetComponent<BoxCollider2D>().size = new Vector2(GetComponent<BoxCollider2D>().size.x, GetComponent<BoxCollider2D>().size.y / scaleDivisor);
+
+            if (!isGrounded())
+            {
+                fastFalling = true;
+            }
         }
-        //else{ fastfall ?}
         if (context.canceled && !isDead)
         {
-            //Debug.Log("stopped crouching!");
-            crouching = false;
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * scaleDivisor, transform.localScale.z);
-            GetComponent<BoxCollider2D>().size = new Vector2(GetComponent<BoxCollider2D>().size.x, GetComponent<BoxCollider2D>().size.y * scaleDivisor);
-            scaleDivisor = 1;
+            if (!canStand())
+            {
+                waitToUncrouch = true;
+            } else if (isGrounded() && canStand())
+            {
+                animator.SetBool("isCrouched", false);
+                crouching = false;
+                fastFalling = false;
+            }
+            if (!isGrounded())
+            {
+                animator.SetBool("isCrouched", false);
+                fastFalling = false;
+            }
         }
     }
 
