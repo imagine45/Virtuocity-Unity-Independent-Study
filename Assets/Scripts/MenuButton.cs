@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class MenuButton : MonoBehaviour
 {
@@ -10,20 +11,33 @@ public class MenuButton : MonoBehaviour
     public GameObject screenB;
     public TMP_Dropdown resDropDown;
     public TMP_Dropdown fullscreenDropDown;
+    public Toggle toggleButton;
 
     private bool isFullScreen = true;
+
+
+    public void Start()
+    {
+        Screen.SetResolution(Screen.resolutions[Screen.resolutions.Length - 1].width, Screen.resolutions[Screen.resolutions.Length - 1].height, isFullScreen);
+        SettingsManagement.instance.curResolution = Screen.resolutions[Screen.resolutions.Length - 1];
+        if (toggleButton != null)
+        {
+            if (toggleButton.name.equals("Speed Warping"))
+            {
+                toggleButton.setIsOnWithoutNotify(SettingsManagement.instance.warpingActive);
+            }
+            //add more toggle effects here
+        }
+    }
+
     public void loadFirstScene()
     {
         SceneManager.LoadScene("Tutorial Scene");
     }
 
-    public void Start()
+    public void continueGame()
     {
-        if (resDropDown != null)
-        {
-            Screen.SetResolution(Screen.resolutions[Screen.resolutions.Length - 1].width, Screen.resolutions[Screen.resolutions.Length - 1].height, isFullScreen);
-        }
-                
+        SceneManager.LoadScene(SceneManager.GetSceneAt(SettingsManagement.instance.currentScene).name);
     }
 
     public void goTo()
@@ -31,6 +45,12 @@ public class MenuButton : MonoBehaviour
         screenA.SetActive(false);
         screenB.SetActive(true);
     }
+
+    public void warpOn()
+    {
+        SettingsManagement.instance.warpingActive = !SettingsManagement.instance.warpingActive;
+    }
+
 
     public void dropDownValueChange()
     {
@@ -64,6 +84,7 @@ public class MenuButton : MonoBehaviour
 
     public void endGame()
     {
+        SettingsManagement.instance.saveSettings();
         Application.Quit();
     }
 }
