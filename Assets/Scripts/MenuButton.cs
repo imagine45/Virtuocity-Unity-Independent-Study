@@ -22,9 +22,9 @@ public class MenuButton : MonoBehaviour
         SettingsManagement.instance.curResolution = Screen.resolutions[Screen.resolutions.Length - 1];
         if (toggleButton != null)
         {
-            if (toggleButton.name.equals("Speed Warping"))
+            if (toggleButton.name.Equals("Speed Warping"))
             {
-                toggleButton.setIsOnWithoutNotify(SettingsManagement.instance.warpingActive);
+                toggleButton.SetIsOnWithoutNotify(SettingsManagement.instance.warpingActive);
             }
             //add more toggle effects here
         }
@@ -37,6 +37,7 @@ public class MenuButton : MonoBehaviour
 
     public void continueGame()
     {
+        SettingsManager.instance.loadedFromContinue = true;
         SceneManager.LoadScene(SceneManager.GetSceneAt(SettingsManagement.instance.currentScene).name);
     }
 
@@ -49,6 +50,7 @@ public class MenuButton : MonoBehaviour
     public void warpOn()
     {
         SettingsManagement.instance.warpingActive = !SettingsManagement.instance.warpingActive;
+        Debug.Log(SettingsManagement.instance.warpingActive);
     }
 
 

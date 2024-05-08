@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour
 
     public bool isPaused = false;
 
+
     //Audio
     private EventInstance playerFootsteps;
 
@@ -77,7 +78,18 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
-        resetCharacter();
+        if (!SettingsManagement.instance.loadedFromContinue)
+        {
+            resetCharacter();
+        }
+        else
+        {
+            checkpoint = SettingsManagement.instance.checkpoint;
+            checkpointSet = true;
+            SettingsManagement.instance.loadedFromContinue = false;
+            rb.position = checkpoint;
+            resetCharacter();
+        }
         playerFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.playerFootsteps);
     }
 

@@ -35,4 +35,16 @@ public class pauseMenu : MonoBehaviour
         player.transform.position = new Vector3(-60, 3, 0);
         Time.timeScale = 1f;
     }
+
+    public void ExitToMenu()
+    {
+        SettingsManagement.instance.saveSettings();
+        SceneManager.LoadScene("Menu");
+    }
+
+    public void ExitToDesktop()
+    {
+        SettingsManagement.instance.saveSettings();
+        Application.Quit();
+    }
 }

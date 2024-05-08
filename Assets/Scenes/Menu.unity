@@ -888,6 +888,7 @@ MonoBehaviour:
   screenB: {fileID: 0}
   resDropDown: {fileID: 0}
   fullscreenDropDown: {fileID: 0}
+  toggleButton: {fileID: 0}
 --- !u!114 &210240522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1174,6 +1175,7 @@ MonoBehaviour:
   screenB: {fileID: 993380649}
   resDropDown: {fileID: 0}
   fullscreenDropDown: {fileID: 0}
+  toggleButton: {fileID: 0}
 --- !u!114 &236300244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1325,6 +1327,7 @@ MonoBehaviour:
   screenB: {fileID: 993380649}
   resDropDown: {fileID: 0}
   fullscreenDropDown: {fileID: 0}
+  toggleButton: {fileID: 0}
 --- !u!114 &237875146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1607,6 +1610,7 @@ MonoBehaviour:
   screenB: {fileID: 1538170658}
   resDropDown: {fileID: 0}
   fullscreenDropDown: {fileID: 0}
+  toggleButton: {fileID: 0}
 --- !u!1 &269715533
 GameObject:
   m_ObjectHideFlags: 0
@@ -2758,6 +2762,7 @@ MonoBehaviour:
   screenB: {fileID: 993380649}
   resDropDown: {fileID: 0}
   fullscreenDropDown: {fileID: 0}
+  toggleButton: {fileID: 0}
 --- !u!114 &848575345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3273,6 +3278,7 @@ MonoBehaviour:
   screenB: {fileID: 993380649}
   resDropDown: {fileID: 0}
   fullscreenDropDown: {fileID: 0}
+  toggleButton: {fileID: 0}
 --- !u!114 &894449493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5560,6 +5566,7 @@ MonoBehaviour:
   screenB: {fileID: 0}
   resDropDown: {fileID: 1707813818}
   fullscreenDropDown: {fileID: 1468462670}
+  toggleButton: {fileID: 0}
 --- !u!114 &1468462670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5678,6 +5685,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1512569168}
   - component: {fileID: 1512569169}
+  - component: {fileID: 1512569170}
   m_Layer: 5
   m_Name: Speed Warping
   m_TagString: Untagged
@@ -5753,8 +5761,37 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1512569170}
+        m_TargetAssemblyTypeName: MenuButton, Assembly-CSharp
+        m_MethodName: warpOn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
+--- !u!114 &1512569170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512569167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59c26a4c6348b3449b324c3a49dd6908, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  screenA: {fileID: 0}
+  screenB: {fileID: 0}
+  resDropDown: {fileID: 0}
+  fullscreenDropDown: {fileID: 0}
+  toggleButton: {fileID: 1512569169}
 --- !u!1 &1530198050
 GameObject:
   m_ObjectHideFlags: 0
@@ -5812,6 +5849,7 @@ MonoBehaviour:
   screenB: {fileID: 548709109}
   resDropDown: {fileID: 0}
   fullscreenDropDown: {fileID: 0}
+  toggleButton: {fileID: 0}
 --- !u!114 &1530198053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6480,6 +6518,7 @@ MonoBehaviour:
   screenB: {fileID: 0}
   resDropDown: {fileID: 1707813818}
   fullscreenDropDown: {fileID: 1468462670}
+  toggleButton: {fileID: 0}
 --- !u!1 &1712167133
 GameObject:
   m_ObjectHideFlags: 0
@@ -6956,6 +6995,7 @@ MonoBehaviour:
   screenB: {fileID: 2071032590}
   resDropDown: {fileID: 0}
   fullscreenDropDown: {fileID: 0}
+  toggleButton: {fileID: 0}
 --- !u!1 &2001156294
 GameObject:
   m_ObjectHideFlags: 0
@@ -7183,6 +7223,7 @@ MonoBehaviour:
   screenB: {fileID: 891213263}
   resDropDown: {fileID: 0}
   fullscreenDropDown: {fileID: 0}
+  toggleButton: {fileID: 0}
 --- !u!1 &2014262258
 GameObject:
   m_ObjectHideFlags: 0
@@ -7212,6 +7253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da16daa9a4a7a34499dd79b3b65a5cd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  warpingActive: 1
+  currentScene: 0
 --- !u!4 &2014262260
 Transform:
   m_ObjectHideFlags: 0
@@ -7580,6 +7623,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59c26a4c6348b3449b324c3a49dd6908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenA: {fileID: 0}
+  screenB: {fileID: 0}
+  resDropDown: {fileID: 0}
+  fullscreenDropDown: {fileID: 0}
+  toggleButton: {fileID: 0}
 --- !u!114 &2096268708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7866,6 +7914,7 @@ MonoBehaviour:
   screenB: {fileID: 0}
   resDropDown: {fileID: 0}
   fullscreenDropDown: {fileID: 0}
+  toggleButton: {fileID: 0}
 --- !u!114 &2128189023
 MonoBehaviour:
   m_ObjectHideFlags: 0

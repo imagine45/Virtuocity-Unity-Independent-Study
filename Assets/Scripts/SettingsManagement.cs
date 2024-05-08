@@ -8,6 +8,11 @@ public class SettingsManagement : MonoBehaviour
 {
     public static SettingsManagement instance;
 
+    public bool warpingActive = true;
+    public Resolution curResolution;
+    public int currentScene;
+    public Vector2 checkpoint;
+    public bool loadedFromContinue;
 
     // Start is called before the first frame update
     void Awake()
@@ -30,6 +35,7 @@ public class SettingsManagement : MonoBehaviour
         public bool warpingActive = true;
         public Resolution curResolution;
         public int currentScene;
+        public Vector2 checkpoint;
     }
 
     public void saveSettings()
@@ -38,7 +44,11 @@ public class SettingsManagement : MonoBehaviour
 
         data.warpingActive = warpingActive;
         data.curResolution = curResolution;
-        data.currentScene = SceneManager.GetActiveScene().buildIndex;
+        data.checkpoint = checkpoint;
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            data.currentScene = SceneManager.GetActiveScene().buildIndex;
+        }
 
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
@@ -54,6 +64,8 @@ public class SettingsManagement : MonoBehaviour
 
             warpingActive = data.warpingActive;
             curResolution = data.curResolution;
+            checkpoint = data.checkpoint;
+            currentScene = data.currentScene;
         }
     }
 }
