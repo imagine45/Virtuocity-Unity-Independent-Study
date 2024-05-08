@@ -37,7 +37,7 @@ public class MenuButton : MonoBehaviour
 
     public void continueGame()
     {
-        SettingsManager.instance.loadedFromContinue = true;
+        SettingsManagement.instance.loadedFromContinue = true;
         SceneManager.LoadScene(SceneManager.GetSceneAt(SettingsManagement.instance.currentScene).name);
     }
 
