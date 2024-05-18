@@ -29,7 +29,6 @@ public class boomBox : MonoBehaviour
             animator.SetTrigger("explode");
             Debug.Log("boom");
 
-
             startTime(Vector2.Distance(player.transform.position, this.transform.position));
             
         }

@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
     public Transform groundcheck;
     public LayerMask groundLayer;
+    private GameObject crushTrigger;
     public ParticleSystem particles;
     public ParticleSystem chargeParticles;
     public ParticleSystem chargeExplosion;
@@ -75,6 +76,8 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         Application.targetFrameRate = 120;
+
+        crushTrigger = GameObject.Find("Crush Trigger");
     }
     void Start()
     {
@@ -108,7 +111,8 @@ public class PlayerController : MonoBehaviour
         canStand();
 
         //dx * speed applied to player velocity
-        if (!isDead) { rb.velocity = new Vector2(dx * speed + onSpeedBlock, Mathf.Sign(rb.velocity.y) * Mathf.Min(Mathf.Abs(rb.velocity.y), dyCap)); }
+        if (!isDead && (!isCrouched() || isCrouched() && !isGrounded())) { rb.velocity = new Vector2(dx * speed + onSpeedBlock, Mathf.Sign(rb.velocity.y) * Mathf.Min(Mathf.Abs(rb.velocity.y), dyCap)); }
+        else if (!isDead && isCrouched() && isGrounded()) { rb.velocity = new Vector2(onSpeedBlock, Mathf.Sign(rb.velocity.y) * Mathf.Min(Mathf.Abs(rb.velocity.y), dyCap)); }
         else { rb.velocity = new Vector2(0, 0); }
 
         animator.SetFloat("runningSpeed", 0.5f + getSpeed() / 2);
@@ -138,6 +142,7 @@ public class PlayerController : MonoBehaviour
 
             animator.SetBool("isFalling", false);
             animator.SetBool("isFastFalling", false);
+            animator.SetBool("jumped", false);
 
             coyoteTimer = 0;
             jumped = false;
@@ -201,8 +206,13 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         jumped = true;
         buffered = false;
-        animator.SetBool("jumped", true);
-        animator.SetBool("isFalling", false);
+
+        if (canStand())
+        {
+            animator.SetBool("isCrouched", false);
+            animator.SetBool("jumped", true);
+            animator.SetBool("isFalling", false);
+        } 
     }
     public void jumpInput(InputAction.CallbackContext context)
     {
@@ -310,7 +320,20 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D topHitLeft = Physics2D.Raycast(new Vector2(transform.position.x - 0.25f, transform.position.y - 0.2f), (Vector2.up), 0.9f, layerMask);
         RaycastHit2D topHitRight = Physics2D.Raycast(new Vector2(transform.position.x + 0.25f, transform.position.y - 0.2f), (Vector2.up), 0.9f, layerMask);
 
+        if(topHitLeft || topHitRight)
+        {
+            animator.SetBool("isCrouched", true);
+        } else if (!crouching && !(topHitLeft || topHitRight))
+        {
+            animator.SetBool("isCrouched", false);
+        }
+
         return !(topHitLeft || topHitRight);
+    }
+
+    public bool isCrouched ()
+    {
+        return animator.GetBool("isCrouched");
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -443,35 +466,48 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void groundMovement()
-    {
-        if (horizontal != 0)
-        {
-            dx += acceleration * horizontal;
-        }
-        else if (horizontal == 0 && Mathf.Abs(dx) > 0)
-        {
-            dx -= Mathf.Min(stopSpeed, Mathf.Abs(dx)) * Mathf.Sign(dx);
-        }
-    }
-
     private void hitWall()
     {
         int playerLayer = 9;
         int layerMask = ~(1 << playerLayer);
 
         RaycastHit2D leftHitLow = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.6f), (Vector2.left), .4f, layerMask);
-        RaycastHit2D leftHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + ((isGrounded() && crouching) ? -0.2f : 0.5f)), (Vector2.left), .4f, layerMask);
+        RaycastHit2D leftHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + ((isGrounded() && isCrouched()) ? -0.2f : 0.5f)), (Vector2.left), .4f, layerMask);
         RaycastHit2D rightHitLow = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - 0.6f), (Vector2.right), .4f, layerMask);
-        RaycastHit2D rightHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + ((isGrounded() && crouching) ? -0.2f : 0.5f)), (Vector2.right), .4f, layerMask);
+        RaycastHit2D rightHitHigh = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + ((isGrounded() && isCrouched()) ? -0.2f : 0.5f)), (Vector2.right), .4f, layerMask);
 
         if (leftHitLow || rightHitLow || leftHitHigh || rightHitHigh)
         {
+            Debug.Log("hit");
             accelerationCap = 1;
             dx = 0;
         }
     }
 
+    private void groundMovement()
+    {
+        if (!isCrouched())
+        {
+            if (horizontal != 0)
+            {
+                dx += acceleration * horizontal;
+            }
+            else if (horizontal == 0 && Mathf.Abs(dx) > 0)
+            {
+                dx -= Mathf.Min(stopSpeed, Mathf.Abs(dx)) * Mathf.Sign(dx);
+            }
+        } else
+        {
+            if (horizontal != 0)
+            {
+                dx += acceleration * horizontal;
+            }
+            else if (horizontal == 0 && Mathf.Abs(dx) > 0)
+            {
+                dx -= Mathf.Min(stopSpeed * 5, Mathf.Abs(dx)) * Mathf.Sign(dx);
+            }
+        }
+    }
     private void airMovement()
     {
         if (horizontal != 0)
