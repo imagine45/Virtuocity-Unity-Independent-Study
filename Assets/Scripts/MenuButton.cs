@@ -35,6 +35,11 @@ public class MenuButton : MonoBehaviour
         SceneManager.LoadScene("Tutorial Scene");
     }
 
+    public void exitToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
     public void continueGame()
     {
         SettingsManagement.instance.loadedFromContinue = true;
