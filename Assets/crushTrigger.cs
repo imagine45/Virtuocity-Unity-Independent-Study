@@ -6,14 +6,26 @@ public class crushTrigger : MonoBehaviour
 {
 
     private GameObject player;
+    private float time;
 
     void Start()
     {
         player = GameObject.Find("Player");
+        time = 0;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        player.GetComponent<PlayerController>().kill();
+        time += Time.deltaTime; 
+
+        if(time >= 0.1)
+        {
+            player.GetComponent<PlayerController>().kill();
+        }
+        Debug.Log(time);
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        time = 0;
     }
 }
