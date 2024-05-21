@@ -16,13 +16,16 @@ public class crushTrigger : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        time += Time.deltaTime; 
 
-        if(time >= 0.1)
+        if (!collision.CompareTag("Battery"))
+        {
+            time += Time.deltaTime;
+        }
+
+        if (time >= 0.1 && !player.GetComponent<PlayerController>().isDead)
         {
             player.GetComponent<PlayerController>().kill();
         }
-        Debug.Log(time);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {

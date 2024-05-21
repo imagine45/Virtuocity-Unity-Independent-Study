@@ -5,51 +5,54 @@ using UnityEngine;
 public class movingBlock : MonoBehaviour
 {
     private GameObject keyFrame;
+    private Rigidbody2D rb;
     private Vector3 startPos;
     private Vector3 endPos;
     private bool isMoving = false;
     private bool movingForward = false;
-    private float stepSize;
+    private float speed;
 
     private GameObject timer;
 
-    //how long in seconds
-    private float speed = 0.5f;
-
     private void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         timer = GameObject.Find("FMODEvents");
-        Timer.beatUpdated += move;
+        Timer.beatUpdated += Move;
         keyFrame = GameObject.Find("Key Frame");
         startPos = this.transform.position;
         endPos = this.transform.Find("Key Frame").position;
-        //Add the move function to the Timer on-beat script
-        stepSize = Vector3.Distance(startPos, endPos) / speed;
+
+        // Calculate speed based on distance and time required
+        speed = Vector3.Distance(startPos, endPos) / 0.2f; // 0.5f is the time duration in seconds
     }
 
     void FixedUpdate()
     {
         if (isMoving)
         {
-            if (movingForward)
-            {
-                moveToEnd();
-            }
-            else if (!movingForward)
-            {
-                moveToStart();
-            }
-            if (Vector3.Distance(transform.position, endPos) < 0.1f || Vector3.Distance(transform.position, startPos) < 0.1f)
+            Vector3 targetPos = movingForward ? endPos : startPos;
+            Vector3 direction = (targetPos - transform.position).normalized;
+            rb.velocity = direction * speed;
+
+            if (Vector3.Distance(transform.position, targetPos) < 0.1f)
             {
                 isMoving = false;
                 movingForward = !movingForward;
+                rb.velocity = Vector3.zero;
+
+                Debug.Log("End");
 
                 //If player velocity doesn't work as expected, add this block's velocity to the player's here
             }
         }
+        else
+        {
+            rb.velocity = Vector3.zero;
+        }
     }
 
-    private void move()
+    private void Move()
     {
         if (timer.GetComponent<Timer>().currentBeat == 1)
         {
@@ -57,17 +60,4 @@ public class movingBlock : MonoBehaviour
             Debug.Log("moving");
         }
     }
-
-    private void moveToEnd()
-    {
-        this.transform.position = Vector3.MoveTowards(this.transform.position, endPos, 1f);
-        //this.transform.position = new Vector3(this.transform.position.x + stepSize, this.transform.position.y + stepSize, 0);
-    }
-
-    private void moveToStart()
-    {
-        this.transform.position = Vector3.MoveTowards(this.transform.position, startPos, 1f);
-        //this.transform.position = new Vector3(this.transform.position.x - stepSize, this.transform.position.y - stepSize, 0);
-    }
-
 }

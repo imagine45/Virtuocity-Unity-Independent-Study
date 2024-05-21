@@ -408,6 +408,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator collectibleRespawn (Collider2D collision, int time)
     {
+        chargeMeter += Mathf.Min(batteryCharge, chargeMeterCap - chargeMeter);
         yield return new WaitForSeconds(time);
 
         collision.gameObject.SetActive(true);
@@ -415,8 +416,16 @@ public class PlayerController : MonoBehaviour
 
     public void batteryCollect(GameObject other)
     {
-        chargeMeter += Mathf.Min(batteryCharge, chargeMeterCap - chargeMeter);
+        other.GetComponent<batteryBehavior>().isCollected();
+        StartCoroutine(batteryCollectAnim(0.4f, other));
+    }
+
+    IEnumerator batteryCollectAnim(float time, GameObject other)
+    {
+        yield return new WaitForSeconds(time);
+
         other.SetActive(false);
+
     }
 
     public void speedBoostCollect(GameObject other)

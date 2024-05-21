@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8224873268555395480}
   - component: {fileID: 8224873268555395481}
   - component: {fileID: 8085281581832380422}
+  - component: {fileID: 3156131673934094502}
+  - component: {fileID: 8224873270240676445}
   m_Layer: 9
   m_Name: Battery
   m_TagString: Battery
@@ -116,3 +118,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnState: 0
   directionState: 0
+--- !u!95 &3156131673934094502
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8224873268555395482}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 099cb144fbcea24418abb9c4abeef8b1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8224873270240676445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8224873268555395482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a221f6cdb795ce747973f72cd5243ecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 3156131673934094502}

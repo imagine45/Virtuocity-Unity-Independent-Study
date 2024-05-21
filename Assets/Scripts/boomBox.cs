@@ -27,7 +27,7 @@ public class boomBox : MonoBehaviour
         if (timer.GetComponent<Timer>().currentBeat == 1)
         {
             animator.SetTrigger("explode");
-            Debug.Log("boom");
+            //Debug.Log("boom");
 
             startTime(Vector2.Distance(player.transform.position, this.transform.position));
             
@@ -52,13 +52,13 @@ public class boomBox : MonoBehaviour
             if (inDistance)
             {
                 player.GetComponent<PlayerController>().kill();
-                Debug.Log("Kill");
+                //Debug.Log("Kill");
             }
             time = 0;
         }
 
         inDistance = (Vector2.Distance(player.transform.position, this.transform.position) <= 4.3f);
 
-        Debug.Log(inDistance);
+        //Debug.Log(inDistance);
     }
 }
