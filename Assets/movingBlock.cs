@@ -23,7 +23,6 @@ public class movingBlock : MonoBehaviour
         startPos = this.transform.position;
         endPos = this.transform.Find("Key Frame").position;
 
-        // Calculate speed based on distance and time required
         speed = Vector3.Distance(startPos, endPos) / 0.2f; // 0.5f is the time duration in seconds
     }
 

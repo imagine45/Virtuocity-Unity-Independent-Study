@@ -46,11 +46,14 @@ public class PlayerController : MonoBehaviour
     private float acceleration = 0.1f;
     private float airAcceleration = 0.1f;
 
+    private float targetX = 0;
+
     public float groundAcceleration = 0.1f;
     public float groundDeceleration = 0.2f;
     private float iceAcceleration = 0.02f;
     private float iceDeceleration = 0.005f;
 
+    private bool onMovingBlock = false;
     public bool isDead = false;
 
     private float dx = 0f;
@@ -111,9 +114,9 @@ public class PlayerController : MonoBehaviour
         canStand();
 
         //dx * speed applied to player velocity
-        if (!isDead && (!isCrouched() || isCrouched() && !isGrounded())) { rb.velocity = new Vector2(dx * speed + onSpeedBlock, Mathf.Sign(rb.velocity.y) * Mathf.Min(Mathf.Abs(rb.velocity.y), dyCap)); }
-        else if (!isDead && isCrouched() && isGrounded()) { rb.velocity = new Vector2(onSpeedBlock, Mathf.Sign(rb.velocity.y) * Mathf.Min(Mathf.Abs(rb.velocity.y), dyCap)); }
-        else { rb.velocity = new Vector2(0, 0); }
+        if (!isDead && (!isCrouched() || isCrouched() && !isGrounded())) { rb.velocity = new Vector2(dx * speed + onSpeedBlock + targetX, Mathf.Sign(rb.velocity.y) * Mathf.Min(Mathf.Abs(rb.velocity.y), dyCap)); }
+        else if (!isDead && isCrouched() && isGrounded()) { rb.velocity = new Vector2(onSpeedBlock + targetX, Mathf.Sign(rb.velocity.y) * Mathf.Min(Mathf.Abs(rb.velocity.y), dyCap)); }
+        else { rb.velocity = new Vector2(targetX, 0); }
 
         animator.SetFloat("runningSpeed", 0.5f + getSpeed() / 2);
 
@@ -136,6 +139,11 @@ public class PlayerController : MonoBehaviour
 
         //Buffer a charge 
         chargeBufferTime();
+
+        //Parent player to moving block if on one
+        OnMovingBlock();
+
+        Debug.Log(animator.GetBool("isFalling"));
 
         if (isGrounded())
         {
@@ -180,7 +188,9 @@ public class PlayerController : MonoBehaviour
         }
 
         if (accelerationCap > 1) { accelerationCap -= Mathf.Max(0.02f, accelerationCap - Mathf.Abs(dx)); } else { accelerationCap = 1; }
-        if (Mathf.Abs(dx) > accelerationCap) { dx = accelerationCap * horizontal; }
+        if (Mathf.Abs(dx) > accelerationCap + targetX) { dx = accelerationCap * horizontal; }
+
+        //CHANGED THIS /\ /\ /\ /\ /\
 
     }
 
@@ -309,7 +319,7 @@ public class PlayerController : MonoBehaviour
     }
     private bool isGrounded()
     {
-        return Physics2D.OverlapCircle(groundcheck.position, 0.4f, groundLayer) && Mathf.Abs(rb.velocity.y) <= 0.01f;
+        return Physics2D.OverlapCircle(groundcheck.position, 0.35f, groundLayer) && Mathf.Abs(rb.velocity.y) <= 0.01f;
     }
 
     private bool canStand()
@@ -361,6 +371,12 @@ public class PlayerController : MonoBehaviour
             stopSpeed = groundDeceleration;
             Debug.Log("on Speed Boost");
         }
+        if (other.gameObject.CompareTag("MovingBlock"))
+        {
+            acceleration = groundAcceleration;
+            stopSpeed = groundDeceleration;
+            Debug.Log("on Moving Block");
+        }
     }
 
     private void OnCollisionExit2D(Collision2D other)
@@ -371,12 +387,52 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnMovingBlock()
+    {
+        Collider2D groundCollider = Physics2D.OverlapCircle(groundcheck.position, 0.3f, groundLayer);
+        float yVelocity = 0;
+        if (isGrounded())
+        {
+            if (groundCollider != null && groundCollider.CompareTag("MovingBlock"))
+            {
+                onMovingBlock = true;
+            }
+            else
+            {
+                onMovingBlock = false;
+            }
+        }
+        else if (animator.GetBool("isFalling"))
+        {
+            onMovingBlock = false;
+        }
+        if (animator.GetBool("jumped"))
+        {
+            onMovingBlock = false;
+        }
+
+        if (onMovingBlock == true && groundCollider != null)
+        {
+            targetX = groundCollider.GetComponent<Rigidbody2D>().velocity.x;
+            rb.velocity = new Vector2(rb.velocity.x, groundCollider.GetComponent<Rigidbody2D>().velocity.y);
+        }
+        else if (groundCollider != null && groundCollider.GetComponent<Rigidbody2D>().velocity.y == 0)
+        {
+            //set player velocity to equal 0 unless they jump??
+        }
+        else
+        {
+            targetX = 0;
+        }
+    }
+
     //for collectibles 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Battery"))
         {
             batteryCollect(other.gameObject);
+            chargeMeter += Mathf.Min(other.GetComponent<batteryBehavior>().BoostAmount(), chargeMeterCap - chargeMeter);
             FMODUnity.RuntimeManager.PlayOneShot("event:/Collectibles/Battery/Battery Collect");
             if (other.GetComponent<collectibleBehavior>().getState().Equals("Respawns")) { StartCoroutine(collectibleRespawn(other, 5)); }
         }
@@ -408,7 +464,6 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator collectibleRespawn (Collider2D collision, int time)
     {
-        chargeMeter += Mathf.Min(batteryCharge, chargeMeterCap - chargeMeter);
         yield return new WaitForSeconds(time);
 
         collision.gameObject.SetActive(true);
@@ -416,16 +471,20 @@ public class PlayerController : MonoBehaviour
 
     public void batteryCollect(GameObject other)
     {
-        other.GetComponent<batteryBehavior>().isCollected();
-        StartCoroutine(batteryCollectAnim(0.4f, other));
+        if (other.GetComponent<CircleCollider2D>().enabled == true)
+        {
+            other.GetComponent<batteryBehavior>().isCollected();
+            StartCoroutine(batteryCollectAnim(0.4f, other));
+        }
     }
 
     IEnumerator batteryCollectAnim(float time, GameObject other)
     {
+        other.GetComponent<CircleCollider2D>().enabled = false;
         yield return new WaitForSeconds(time);
 
         other.SetActive(false);
-
+        other.GetComponent<CircleCollider2D>().enabled = true;
     }
 
     public void speedBoostCollect(GameObject other)
@@ -501,7 +560,7 @@ public class PlayerController : MonoBehaviour
             {
                 dx += acceleration * horizontal;
             }
-            else if (horizontal == 0 && Mathf.Abs(dx) > 0)
+            else if (horizontal == 0 && Mathf.Abs(dx - targetX) > 0)
             {
                 dx -= Mathf.Min(stopSpeed, Mathf.Abs(dx)) * Mathf.Sign(dx);
             }
@@ -511,7 +570,7 @@ public class PlayerController : MonoBehaviour
             {
                 dx += acceleration * horizontal;
             }
-            else if (horizontal == 0 && Mathf.Abs(dx) > 0)
+            else if (horizontal == 0 && Mathf.Abs(dx - targetX) > 0)
             {
                 dx -= Mathf.Min(stopSpeed * 5, Mathf.Abs(dx)) * Mathf.Sign(dx);
             }
@@ -523,7 +582,7 @@ public class PlayerController : MonoBehaviour
         {
             dx += airAcceleration * horizontal;
         }
-        else if (horizontal == 0 && Mathf.Abs(dx) > 0)
+        else if (horizontal == 0 && Mathf.Abs(dx - targetX) > 0)
         {
             dx -= Mathf.Min(stopSpeed, Mathf.Abs(dx)) * Mathf.Sign(dx);
         }

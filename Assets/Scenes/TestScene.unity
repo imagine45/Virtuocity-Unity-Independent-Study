@@ -200,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 58466745}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 78.92, y: 6.61, z: -10}
+  m_LocalPosition: {x: -62.16, y: 6.61, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -941,7 +941,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 407372046}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 78.92, y: 6.61, z: -10}
+  m_LocalPosition: {x: -62.16, y: 6.61, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2386,7 +2386,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1117449451}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3, y: 0, z: 0}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19987,7 +19987,7 @@ GameObject:
   - component: {fileID: 1677620668}
   m_Layer: 3
   m_Name: Square
-  m_TagString: Ground
+  m_TagString: MovingBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21083,7 +21083,7 @@ GameObject:
   - component: {fileID: 1828659967}
   m_Layer: 3
   m_Name: Square (1)
-  m_TagString: Ground
+  m_TagString: MovingBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21160,8 +21160,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1828659963}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -45.1258, y: 2.0034, z: 0}
-  m_LocalScale: {x: 1, y: 2, z: 1}
+  m_LocalPosition: {x: -39.8249, y: 2.0034, z: 0}
+  m_LocalScale: {x: 11.6018, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1117449452}
@@ -21929,7 +21929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3553577020442035132, guid: 232a3c414fc5f49408798eaf5001f901, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 78.92
+      value: -62.16
       objectReference: {fileID: 0}
     - target: {fileID: 3553577020442035132, guid: 232a3c414fc5f49408798eaf5001f901, type: 3}
       propertyPath: m_LocalPosition.y
@@ -22147,6 +22147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 4525633444712028052}
+  boostAmount: 5
 --- !u!114 &4525633444712028051
 MonoBehaviour:
   m_ObjectHideFlags: 0

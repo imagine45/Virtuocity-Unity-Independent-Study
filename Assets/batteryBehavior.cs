@@ -5,6 +5,8 @@ using UnityEngine;
 public class batteryBehavior : MonoBehaviour
 {
     [SerializeField] Animator animator;
+    [SerializeField] float boostAmount = 2.5f;
+    private GameObject player; 
     private bool near = false;
     private float time = 0;
     private float yPos;
@@ -12,6 +14,7 @@ public class batteryBehavior : MonoBehaviour
     private void Start()
     {
         yPos = this.transform.position.y;
+        player = GameObject.Find("Player");
     }
 
     private void FixedUpdate()
@@ -25,14 +28,8 @@ public class batteryBehavior : MonoBehaviour
         animator.SetTrigger("Collected");
     }
 
-    public void respawned()
-    {
-        animator.SetTrigger("Respawned");
-    }
-
     private void isNear()
     {
-        GameObject player = GameObject.Find("Player");
         if (Vector3.Distance(player.transform.position, transform.position) < 3 && !near)
         {
             near = true;
@@ -59,6 +56,10 @@ public class batteryBehavior : MonoBehaviour
         }
 
         this.transform.position = new Vector3(transform.position.x, yPos + Mathf.Sin(time) / 4, 0);
+    }
 
+    public float BoostAmount()
+    {
+        return boostAmount;
     }
 }
