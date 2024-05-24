@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
     private float airAcceleration = 0.1f;
 
     private float targetX = 0;
+    private float targetY = 0;
 
     public float groundAcceleration = 0.1f;
     public float groundDeceleration = 0.2f;
@@ -142,8 +143,6 @@ public class PlayerController : MonoBehaviour
 
         //Parent player to moving block if on one
         OnMovingBlock();
-
-        Debug.Log(animator.GetBool("isFalling"));
 
         if (isGrounded())
         {
@@ -390,7 +389,6 @@ public class PlayerController : MonoBehaviour
     private void OnMovingBlock()
     {
         Collider2D groundCollider = Physics2D.OverlapCircle(groundcheck.position, 0.3f, groundLayer);
-        float yVelocity = 0;
         if (isGrounded())
         {
             if (groundCollider != null && groundCollider.CompareTag("MovingBlock"))
@@ -414,11 +412,7 @@ public class PlayerController : MonoBehaviour
         if (onMovingBlock == true && groundCollider != null)
         {
             targetX = groundCollider.GetComponent<Rigidbody2D>().velocity.x;
-            rb.velocity = new Vector2(rb.velocity.x, groundCollider.GetComponent<Rigidbody2D>().velocity.y);
-        }
-        else if (groundCollider != null && groundCollider.GetComponent<Rigidbody2D>().velocity.y == 0)
-        {
-            //set player velocity to equal 0 unless they jump??
+            targetY = groundCollider.GetComponent<Rigidbody2D>().velocity.y;
         }
         else
         {

@@ -40,8 +40,6 @@ public class movingBlock : MonoBehaviour
                 movingForward = !movingForward;
                 rb.velocity = Vector3.zero;
 
-                Debug.Log("End");
-
                 //If player velocity doesn't work as expected, add this block's velocity to the player's here
             }
         }
@@ -56,7 +54,6 @@ public class movingBlock : MonoBehaviour
         if (timer.GetComponent<Timer>().currentBeat == 1)
         {
             isMoving = true;
-            Debug.Log("moving");
         }
     }
 }
