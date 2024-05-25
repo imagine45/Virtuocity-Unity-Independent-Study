@@ -79,14 +79,15 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        Application.targetFrameRate = 120;
+        Application.targetFrameRate = 144;
 
         crushTrigger = GameObject.Find("Crush Trigger");
     }
     void Start()
     {
-        if (!SettingsManagement.instance.loadedFromContinue)
+        if (SettingsManagement.instance != null && !SettingsManagement.instance.loadedFromContinue)
         {
+            this.transform.position = GameObject.Find("Start Pos").GetComponent<Transform>().position;
             resetCharacter();
         }
         else
@@ -359,6 +360,12 @@ public class PlayerController : MonoBehaviour
             stopSpeed = groundDeceleration;
             playerFootsteps.setParameterByName("Ground Type", (float) GroundType.WOOD);
         }
+        if (other.gameObject.CompareTag("Metal"))
+        {
+            acceleration = groundAcceleration;
+            stopSpeed = groundDeceleration;
+            playerFootsteps.setParameterByName("Ground Type", (float)GroundType.METAL);
+        }
         if (other.gameObject.CompareTag("Ice"))
         {
             acceleration = iceAcceleration;
@@ -450,7 +457,7 @@ public class PlayerController : MonoBehaviour
     }
     private void resetCharacter()
     {
-        playerFootsteps.stop(STOP_MODE.IMMEDIATE);
+        playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
         accelerationCap = 1;
         dx = 0;
         chargeMeter = 0;

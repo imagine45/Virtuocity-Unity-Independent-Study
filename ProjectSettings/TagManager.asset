@@ -12,6 +12,7 @@ TagManager:
   - Concrete
   - Wood
   - MovingBlock
+  - Metal
   - Checkpoint
   layers:
   - Default
