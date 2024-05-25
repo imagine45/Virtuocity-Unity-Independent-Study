@@ -12,6 +12,7 @@ TagManager:
   - Concrete
   - Wood
   - MovingBlock
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

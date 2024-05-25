@@ -7,7 +7,7 @@ public class boostBlock : MonoBehaviour
     private GameObject timer;
     private GameObject player;
     private bool playerOn = false;
-
+    [SerializeField] private bool isActive;
     private enum directions { RIGHT, LEFT = 1 }
     [SerializeField] directions direction;
 
@@ -28,29 +28,40 @@ public class boostBlock : MonoBehaviour
         if (timer.GetComponent<Timer>().currentBeat == 1)
         {
             this.GetComponent<Animator>().SetTrigger("Boost");
-
-            if (playerOn)
+            if (isActive)
             {
-                player.GetComponent<PlayerController>().speedBlockBoost((int)direction);
+                if (playerOn)
+                {
+                    player.GetComponent<PlayerController>().speedBlockBoost((int)direction);
+                }
             }
+            
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (isActive)
         {
-            playerOn = true;
-            player.GetComponent<PlayerController>().speedBlockIdle((int)direction, true);
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                playerOn = true;
+                player.GetComponent<PlayerController>().speedBlockIdle((int)direction, true);
+            }
         }
+        
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (isActive)
         {
-            playerOn = false;
-            player.GetComponent<PlayerController>().speedBlockIdle((int)direction, false);
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                playerOn = false;
+                player.GetComponent<PlayerController>().speedBlockIdle((int)direction, false);
+            }
         }
+       
     }
 }

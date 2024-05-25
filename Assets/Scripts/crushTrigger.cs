@@ -17,11 +17,12 @@ public class crushTrigger : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
 
-        if (!collision.CompareTag("Battery"))
+        if (!collision.CompareTag("Battery") && !collision.CompareTag("Checkpoint"))
         {
             time += Time.deltaTime;
         }
-
+        
+        
         if (time >= 0.1 && !player.GetComponent<PlayerController>().isDead)
         {
             player.GetComponent<PlayerController>().kill();
