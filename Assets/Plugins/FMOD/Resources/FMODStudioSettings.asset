@@ -405,6 +405,8 @@ MonoBehaviour:
   MasterBanks:
   - Master
   Banks:
+  - Ambiance
+  - HUD
   - Music
   - SFX
   BanksToLoad: []

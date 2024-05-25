@@ -6,16 +6,25 @@ public class elevatorBehavior : MonoBehaviour
 {
     public GameObject keySprite;
     private GameObject player;
+    private Animator animator;
     private float radius;
     private float fadeRadius;
     private bool inRadius = false;
     private SpriteRenderer indicatorSpriteRenderer;
     private Vector2 buttonPos;
 
+    public FMODUnity.EventReference ButtonEvent;
+    public FMODUnity.EventReference ElevatorEvent;
+    private FMOD.Studio.EventInstance buttonInstance;
+    private FMOD.Studio.EventInstance elevatorInstance;
+
     private Rigidbody2D rb;
     private bool isMoving = false;
     void Start()
     {
+        buttonInstance = FMODUnity.RuntimeManager.CreateInstance(ButtonEvent);
+        elevatorInstance = FMODUnity.RuntimeManager.CreateInstance(ElevatorEvent);
+
         buttonPos = new Vector2(-30, 12);
         rb = this.GetComponent<Rigidbody2D>();
 
@@ -40,14 +49,27 @@ public class elevatorBehavior : MonoBehaviour
     void FixedUpdate()
     {
         InRadius();
-        rb.velocity = (isMoving) ? new Vector3(0, 1, 0) : new Vector3(0, 0, 0);
+        //rb.velocity = (isMoving) ? new Vector3(0, 1, 0) : new Vector3(0, 0, 0);
+    }
+
+    public void playElevatorSound()
+    {
+        elevatorInstance.start();
+    }
+
+    private void playButtonSound()
+    {
+        buttonInstance.start();
     }
 
     public void Move()
     {
-        if (inRadius)
+        if (inRadius && !isMoving)
         {
-            isMoving = !isMoving;
+            GameObject.Find("Elevator Movement Animation Parent").GetComponent<Animator>().SetTrigger("animStart");
+            playButtonSound();
+            playElevatorSound();
+            isMoving = true;
         }
     }
 
@@ -68,5 +90,14 @@ public class elevatorBehavior : MonoBehaviour
             keySprite.SetActive(false);
             inRadius = false;
         }
+    }
+
+    private void OnDestroy()
+    {
+        buttonInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        buttonInstance.release();
+
+        elevatorInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        elevatorInstance.release();
     }
 }

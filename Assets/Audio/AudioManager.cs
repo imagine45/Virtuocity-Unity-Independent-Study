@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     private List<EventInstance> eventInstances;
 
     private EventInstance musicEventInstance;
+    private EventInstance ambianceEventInstance;
     private EventInstance footstepEventInstance;
 
     public static AudioManager instance { get; private set; }
@@ -21,7 +22,7 @@ public class AudioManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
             eventInstances = new List<EventInstance>();
-            //InitializeMusic(FMODEvents.instance.music);
+            InitializeAmbiance(FMODEvents.instance.ambiance);
         } else
         {
             Destroy(gameObject);
@@ -30,8 +31,13 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-    }
 
+    }
+    private void InitializeAmbiance(EventReference ambianceEventReference)
+    {
+        ambianceEventInstance = CreateInstance(ambianceEventReference);
+        ambianceEventInstance.start(); 
+    }
     private void InitializeMusic(EventReference musicEventReference)
     {
         musicEventInstance = CreateInstance(musicEventReference);

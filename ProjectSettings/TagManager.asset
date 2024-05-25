@@ -12,6 +12,7 @@ TagManager:
   - Concrete
   - Wood
   - MovingBlock
+  - Metal
   layers:
   - Default
   - TransparentFX
