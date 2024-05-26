@@ -12,12 +12,14 @@ public class MenuButton : MonoBehaviour
     public TMP_Dropdown resDropDown;
     public TMP_Dropdown fullscreenDropDown;
     public Toggle toggleButton;
+    private Color color; 
 
     private bool isFullScreen = true;
 
 
     public void Start()
     {
+        color = this.GetComponent<Image>().color;
         Screen.SetResolution(Screen.resolutions[Screen.resolutions.Length - 1].width, Screen.resolutions[Screen.resolutions.Length - 1].height, isFullScreen);
         SettingsManagement.instance.curResolution = Screen.resolutions[Screen.resolutions.Length - 1];
         if (toggleButton != null)
@@ -33,6 +35,16 @@ public class MenuButton : MonoBehaviour
     public void loadFirstScene()
     {
         SceneManager.LoadScene("Tutorial Scene");
+    }
+
+    public void sizeOnHover()
+    {
+        this.GetComponent<Image>().color = new Color(0.1f, 0.8f, 0.97f);
+    }
+
+    public void sizeOnExit()
+    {
+        this.GetComponent<Image>().color = color; 
     }
 
     public void exitToMenu()
