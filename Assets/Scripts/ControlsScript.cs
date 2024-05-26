@@ -7,6 +7,7 @@ using TMPro;
 
 public class ControlsScript : MonoBehaviour
 {
+    [SerializeField] private int bindingIndex;
     [SerializeField] private InputActionReference bind = null;
     [SerializeField] private GameObject manager = null;
     private PlayerInput playerInput;
@@ -37,8 +38,7 @@ public class ControlsScript : MonoBehaviour
 
     private void RebindComplete()
     {
-        int bindingIndex = bind.action.GetBindingIndexForControl(bind.action.controls[0]);
-        bindingDisplayNameText.text = InputControlPath.ToHumanReadableString(bind.action.bindings[0].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+        bindingDisplayNameText.text = InputControlPath.ToHumanReadableString(bind.action.bindings[bindingIndex].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
 
         rebindingOperation.Dispose();
         startRebindObject.SetActive(true);
