@@ -14,6 +14,9 @@ TagManager:
   - MovingBlock
   - Metal
   - Checkpoint
+  - Zoom In
+  - Zoom In
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

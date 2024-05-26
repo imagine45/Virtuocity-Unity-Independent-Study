@@ -7,7 +7,7 @@ public class Timer : MonoBehaviour
     public static Timer instance;
 
     public int currentBeat = 0;
-    public GameObject postProcess;
+    //public GameObject postProcess;
 
     public static int lastBeat = 0;
     public static string lastMarkerString = null;
@@ -30,7 +30,7 @@ public class Timer : MonoBehaviour
     public FMODUnity.EventReference EventName;
 
     FMOD.Studio.EVENT_CALLBACK beatCallback;
-    FMOD.Studio.EventInstance musicInstance;
+     FMOD.Studio.EventInstance musicInstance;
 
 #if UNITY_EDITOR
     void Reset()
