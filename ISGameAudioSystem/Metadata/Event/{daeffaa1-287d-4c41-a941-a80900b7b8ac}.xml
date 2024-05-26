@@ -109,6 +109,7 @@
 		<relationship name="effects">
 			<destination>{e1308dce-1ea8-4b27-ad88-7259aa5c9204}</destination>
 			<destination>{b645d803-f72d-4d5f-9058-fded4be42daa}</destination>
+			<destination>{e480b132-e632-4517-ac66-1e9c7c9bb821}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{6afdb8db-1ba2-4656-bc46-94d5d1c5d249}" />
@@ -137,4 +138,5 @@
 			<value>-7.5</value>
 		</property>
 	</object>
+	<object class="ObjectSpatialiserEffect" id="{e480b132-e632-4517-ac66-1e9c7c9bb821}" />
 </objects>

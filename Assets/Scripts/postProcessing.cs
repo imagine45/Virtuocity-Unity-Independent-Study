@@ -6,16 +6,22 @@ using UnityEngine.Rendering.Universal;
 
 public class postProcessing : MonoBehaviour
 {
-    public GameObject player;
+    private GameObject player;
     public GameObject beatTracker;
     private Volume volume;
     private LensDistortion lensDistortion;
     private Bloom bloom;
 
+    private bool noPlayer = true;
     private float speed;
 
     private void Awake()
     {
+        if (GameObject.Find("Player") != null)
+        {
+            player = GameObject.Find("Player");
+            noPlayer = false;
+        }
         Timer.beatUpdated += onBeat;
     }
 
@@ -26,13 +32,16 @@ public class postProcessing : MonoBehaviour
 
     private void FixedUpdate()
     {
-        speed = player.GetComponent<PlayerController>().getSpeed();
+        if (!noPlayer)
+        {
+            speed = player.GetComponent<PlayerController>().getSpeed();
+            volume.profile.TryGet(out lensDistortion);
+            lensDistortion.intensity.value = -speed / 20;
+        }
 
         volume = GetComponent<Volume>();
-        volume.profile.TryGet(out lensDistortion);
         volume.profile.TryGet(out bloom);
 
-        lensDistortion.intensity.value = -speed / 20;
 
         if (bloom.intensity.value >= 1)
         {

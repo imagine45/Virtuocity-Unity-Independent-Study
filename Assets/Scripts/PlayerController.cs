@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using FMOD.Studio;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem particles;
     public ParticleSystem chargeParticles;
     public ParticleSystem chargeExplosion;
-    //private int groundSlamParticleCount = 0;
+    [SerializeField] CinemachineVirtualCamera virtualCamera;
 
     public Animator animator;
 
@@ -29,8 +30,10 @@ public class PlayerController : MonoBehaviour
     private int dyCap = 15;
     private int onSpeedBlock;
 
+    private bool inZoomArea = false;
+
     //the amount of charge given by batteries
-    private float batteryCharge = 2.5f;
+    //private float batteryCharge = 2.5f;
 
     private float chargeMeter;
     private float chargeMeterCap = 10f;
@@ -87,7 +90,10 @@ public class PlayerController : MonoBehaviour
     {
         if (SettingsManagement.instance != null && !SettingsManagement.instance.loadedFromContinue)
         {
-            this.transform.position = GameObject.Find("Start Pos").GetComponent<Transform>().position;
+            if (GameObject.Find("Start Pos"))
+            {
+                this.transform.position = GameObject.Find("Start Pos").GetComponent<Transform>().position;
+            }
             resetCharacter();
         }
         else
@@ -144,6 +150,9 @@ public class PlayerController : MonoBehaviour
 
         //Parent player to moving block if on one
         OnMovingBlock();
+
+        //Moves camera back to default position
+        cameraToDefault();
 
         if (isGrounded())
         {
@@ -209,6 +218,7 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("isMoving", true);
         }
+
     }
 
     private void jump()
@@ -442,6 +452,37 @@ public class PlayerController : MonoBehaviour
         {
             speedBoostCollect(other.gameObject);
             if (other.GetComponent<collectibleBehavior>().getState().Equals("Respawns")) { StartCoroutine(collectibleRespawn(other, 5)); }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if(other.gameObject.CompareTag("Zoom In"))
+        {
+            inZoomArea = false; 
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Zoom In"))
+        {
+            inZoomArea = true;
+            var fov = virtualCamera.m_Lens.FieldOfView;
+            int target = 60;
+            Vector2 pos = Vector2.MoveTowards(new Vector2(fov, 0), new Vector2(target, 0), 0.5f);
+            virtualCamera.m_Lens.FieldOfView = pos.x;
+        }
+    }
+
+    private void cameraToDefault()
+    {
+        if (!inZoomArea && !virtualCamera.m_Lens.Orthographic)
+        {
+            var fov = virtualCamera.m_Lens.FieldOfView;
+            int max = 100;
+            Vector2 pos = Vector2.MoveTowards(new Vector2(fov, 0), new Vector2(max, 0), 0.5f);
+            virtualCamera.m_Lens.FieldOfView = pos.x;
         }
     }
 
