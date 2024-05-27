@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class AudioManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
             eventInstances = new List<EventInstance>();
             InitializeAmbiance(FMODEvents.instance.ambiance);
         } else
@@ -31,7 +32,11 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-
+        if (SceneManager.GetActiveScene().name == "Menu")
+        {
+            Debug.Log("Menu Screen");
+            Destroy(gameObject);
+        }
     }
     private void InitializeAmbiance(EventReference ambianceEventReference)
     {

@@ -34,13 +34,14 @@ public class MenuButton : MonoBehaviour
 
     public void loadFirstScene()
     {
-        StartCoroutine(exitAnim(4));
+        StartCoroutine(exitAnim(4, "Tutorial Scene"));
     }
 
-    IEnumerator exitAnim(int time)
+    IEnumerator exitAnim(int time, string scene)
     {
         yield return new WaitForSeconds(time);
-        SceneManager.LoadScene("Tutorial Scene");
+        Debug.Log("Loading scene");
+        SceneManager.LoadScene(scene);
     }
 
     public void sizeOnHover()
@@ -61,8 +62,7 @@ public class MenuButton : MonoBehaviour
     public void continueGame()
     {
         SettingsManagement.instance.loadedFromContinue = true;
-        StartCoroutine(exitAnim(4));
-        SceneManager.LoadScene(SceneManager.GetSceneAt(SettingsManagement.instance.currentScene).name);
+        StartCoroutine(exitAnim(4, SceneManager.GetSceneAt(SettingsManagement.instance.currentScene).name));
     }
 
     public void goTo()

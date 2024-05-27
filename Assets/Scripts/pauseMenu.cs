@@ -34,7 +34,8 @@ public class pauseMenu : MonoBehaviour
     {
         player.GetComponent<PlayerController>().isPaused = false;
         m_pauseMenu.SetActive(false);
-        player.transform.position = new Vector3(-60, 3, 0);
+        //player.transform.position = new Vector3(-60, 3, 0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Time.timeScale = 1f;
     }
 
