@@ -14,6 +14,7 @@ public class ControlsScript : MonoBehaviour
     [SerializeField] private TMP_Text bindingDisplayNameText =null;
     [SerializeField] private GameObject startRebindObject = null;
     [SerializeField] private GameObject waitingForInputObject = null;
+    private Color color;
 
     void Start()
     {
@@ -34,6 +35,18 @@ public class ControlsScript : MonoBehaviour
             .OnCancel(operation => RebindComplete())
             .OnComplete(operation => RebindComplete())
             .Start();
+    }
+
+    public void sizeOnHover()
+    {
+        this.GetComponent<Image>().color = new Color(0.1f, 0.8f, 0.97f);
+        this.color.a = 200f / 255f;
+    }
+
+    public void sizeOnExit()
+    {
+        this.GetComponent<Image>().color = color;
+        this.color.a = 200f / 255f;
     }
 
     private void RebindComplete()

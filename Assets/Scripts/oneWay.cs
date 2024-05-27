@@ -24,7 +24,7 @@ public class oneWay : MonoBehaviour
         playerVector = player.GetComponent<Rigidbody2D>().velocity;
         playerCoord = groundCheck.transform.position;
 
-        if (Mathf.Sign(playerVector.y) == Mathf.Sign(platformVector.y) && Mathf.Abs(playerVector.y) >= 0.001)
+        if ((Mathf.Sign(playerVector.y) == Mathf.Sign(platformVector.y) && Mathf.Abs(playerVector.y) >= 0.001) || player.transform.position.y < this.transform.position.y)
         {
             rb.simulated = false;
         } else if (playerCoord.y >= this.transform.position.y) 

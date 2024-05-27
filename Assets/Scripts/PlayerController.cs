@@ -21,14 +21,18 @@ public class PlayerController : MonoBehaviour
 
     private float horizontal;
     private float speed = 7f;
-    private float jumpingPower = 14f;
+    private float jumpingPower = 15f;
     private bool isFacingRight = true;
     private bool jumped = false;
     private bool buffered = false;
     private float stopSpeed = 0.2f;
     private bool charged = false;
+    private int dyFastFallCap = 20;
+    private int dyFallCap = 12;
     private int dyCap = 15;
     private int onSpeedBlock;
+
+    private float footstepSoundTimer = 0;
 
     private bool inZoomArea = false;
 
@@ -54,6 +58,7 @@ public class PlayerController : MonoBehaviour
 
     public float groundAcceleration = 0.1f;
     public float groundDeceleration = 0.2f;
+    private float crouchStopMultiplier = 2f;
     private float iceAcceleration = 0.02f;
     private float iceDeceleration = 0.005f;
 
@@ -64,12 +69,13 @@ public class PlayerController : MonoBehaviour
     //private float dy = 0f;
 
     private int coyoteTimer = 0;
-    private int coyoteLimit = 5;
+    private int coyoteLimit = 7;
     private bool hasCoyoteTime;
 
     private bool crouching = false;
     private bool fastFalling = false;
     private bool waitToUncrouch = false;
+    private bool wallHit = false;
 
     private bool checkpointSet = false;
     private Vector2 checkpoint;
@@ -98,10 +104,13 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            checkpoint = SettingsManagement.instance.checkpoint;
-            checkpointSet = true;
-            SettingsManagement.instance.loadedFromContinue = false;
-            rb.position = checkpoint;
+            if (SettingsManagement.instance.checkpoint != null)
+            {
+                checkpoint = SettingsManagement.instance.checkpoint;
+                checkpointSet = true;
+                SettingsManagement.instance.loadedFromContinue = false;
+                rb.position = checkpoint;
+            }
             resetCharacter();
         }
         playerFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.playerFootsteps);
@@ -122,8 +131,7 @@ public class PlayerController : MonoBehaviour
         canStand();
 
         //dx * speed applied to player velocity
-        if (!isDead && (!isCrouched() || isCrouched() && !isGrounded())) { rb.velocity = new Vector2(dx * speed + onSpeedBlock + targetX, Mathf.Sign(rb.velocity.y) * Mathf.Min(Mathf.Abs(rb.velocity.y), dyCap)); }
-        else if (!isDead && isCrouched() && isGrounded()) { rb.velocity = new Vector2(onSpeedBlock + targetX, Mathf.Sign(rb.velocity.y) * Mathf.Min(Mathf.Abs(rb.velocity.y), dyCap)); }
+        if (!isDead/* && (!isCrouched() || isCrouched() && !isGrounded())*/) { rb.velocity = new Vector2(dx * speed + onSpeedBlock + targetX, Mathf.Max(rb.velocity.y, -dyCap)); }
         else { rb.velocity = new Vector2(targetX, 0); }
 
         animator.SetFloat("runningSpeed", 0.5f + getSpeed() / 2);
@@ -161,6 +169,8 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("isFastFalling", false);
             animator.SetBool("jumped", false);
 
+            dyCap = dyFallCap;  
+
             coyoteTimer = 0;
             jumped = false;
             hasCoyoteTime = false;
@@ -185,10 +195,19 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+
             if (rb.velocity.y < 0)
             {
                 animator.SetBool("isFalling", true);
                 animator.SetBool("jumped", false);
+
+                if(isCrouched())
+                {
+                    dyCap = dyFastFallCap;
+                } else
+                {
+                    dyCap = dyFallCap;
+                }
             }
 
             coyoteTime();
@@ -210,7 +229,7 @@ public class PlayerController : MonoBehaviour
         {
             flip();
         }
-        if (Mathf.Abs(dx) < 0.05f && horizontal == 0)
+        if (Mathf.Abs(dx) < 0.05f || horizontal == 0 || wallHit)
         {
             animator.SetBool("isMoving", false);
         }
@@ -223,7 +242,16 @@ public class PlayerController : MonoBehaviour
 
     private void jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+
+        if (!isCrouched())
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+        }
+        else
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower / 1.25f);
+        }
+
         jumped = true;
         buffered = false;
 
@@ -273,6 +301,10 @@ public class PlayerController : MonoBehaviour
             chargeExplosion.Play();
             FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Player Boost");
             charged = true;
+            if (isCrouched())
+            {
+                accelerationCap += 0.75f;
+            } 
             accelerationCap += 2;
             dx = accelerationCap * horizontal;
             chargeMeter -= chargeUsage;
@@ -443,7 +475,6 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Battery"))
         {
             batteryCollect(other.gameObject);
-            chargeMeter += Mathf.Min(other.GetComponent<batteryBehavior>().BoostAmount(), chargeMeterCap - chargeMeter);
             FMODUnity.RuntimeManager.PlayOneShot("event:/Collectibles/Battery/Battery Collect");
             if (other.GetComponent<collectibleBehavior>().getState().Equals("Respawns")) { StartCoroutine(collectibleRespawn(other, 5)); }
         }
@@ -515,6 +546,8 @@ public class PlayerController : MonoBehaviour
     {
         if (other.GetComponent<CircleCollider2D>().enabled == true)
         {
+            chargeMeter += Mathf.Min(other.GetComponent<batteryBehavior>().BoostAmount(), chargeMeterCap - chargeMeter);
+            other.GetComponent<CircleCollider2D>().enabled = false;
             other.GetComponent<batteryBehavior>().isCollected();
             StartCoroutine(batteryCollectAnim(0.4f, other));
         }
@@ -522,7 +555,6 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator batteryCollectAnim(float time, GameObject other)
     {
-        other.GetComponent<CircleCollider2D>().enabled = false;
         yield return new WaitForSeconds(time);
 
         other.SetActive(false);
@@ -588,9 +620,12 @@ public class PlayerController : MonoBehaviour
 
         if (leftHitLow || rightHitLow || leftHitHigh || rightHitHigh)
         {
-            Debug.Log("hit");
             accelerationCap = 1;
+            wallHit = true;
             dx = 0;
+        } else
+        {
+            wallHit = false;
         }
     }
 
@@ -608,13 +643,9 @@ public class PlayerController : MonoBehaviour
             }
         } else
         {
-            if (horizontal != 0)
+            if (Mathf.Abs(dx - targetX) > 0)
             {
-                dx += acceleration * horizontal;
-            }
-            else if (horizontal == 0 && Mathf.Abs(dx - targetX) > 0)
-            {
-                dx -= Mathf.Min(stopSpeed * 5, Mathf.Abs(dx)) * Mathf.Sign(dx);
+                dx -= Mathf.Min(stopSpeed * crouchStopMultiplier, Mathf.Abs(dx)) * Mathf.Sign(dx);
             }
         }
     }
@@ -642,7 +673,7 @@ public class PlayerController : MonoBehaviour
 
     public void moveInput(InputAction.CallbackContext context)
     {
-        if (!isDead) { horizontal = context.ReadValue<Vector2>().x; }
+        if (!isDead) { horizontal = Mathf.Round(context.ReadValue<Vector2>().x); }
         else { horizontal = 0; }
     }
 
@@ -751,16 +782,18 @@ public class PlayerController : MonoBehaviour
         PLAYBACK_STATE playbackState;
         playerFootsteps.getPlaybackState(out playbackState);
 
-        if (dx == 0 || !isGrounded() && !isDead && !isPaused)
+        if (Mathf.Abs(dx) <= 0.1f || !isGrounded() || isDead || isPaused || isCrouched())
         {
             if (playbackState.Equals(PLAYBACK_STATE.PLAYING))
             {
                 playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
             }
+            footstepSoundTimer = 0;
         //playerFootsteps.setParameterByName("Ground Type", (float)GroundType.NOT_ON_GROUND);
-        } else if (!isDead)
+        } else 
         {
-            if (playbackState.Equals(PLAYBACK_STATE.STOPPING) || playbackState.Equals(PLAYBACK_STATE.STOPPED)) {
+            footstepSoundTimer += Time.deltaTime;
+            if (footstepSoundTimer >= 0.2f && (playbackState.Equals(PLAYBACK_STATE.STOPPING) || playbackState.Equals(PLAYBACK_STATE.STOPPED))) {
                 playerFootsteps.start();
             }
         }

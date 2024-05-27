@@ -32,6 +32,8 @@ public class postProcessing : MonoBehaviour
 
     private void FixedUpdate()
     {
+        volume = GetComponent<Volume>();
+
         if (!noPlayer)
         {
             speed = player.GetComponent<PlayerController>().getSpeed();
@@ -39,7 +41,6 @@ public class postProcessing : MonoBehaviour
             lensDistortion.intensity.value = -speed / 20;
         }
 
-        volume = GetComponent<Volume>();
         volume.profile.TryGet(out bloom);
 
 

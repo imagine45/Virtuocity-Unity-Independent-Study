@@ -34,6 +34,12 @@ public class MenuButton : MonoBehaviour
 
     public void loadFirstScene()
     {
+        StartCoroutine(exitAnim(2));
+    }
+
+    IEnumerator exitAnim(int time)
+    {
+        yield return new WaitForSeconds(time);
         SceneManager.LoadScene("Tutorial Scene");
     }
 
