@@ -374,10 +374,10 @@ public class PlayerController : MonoBehaviour
 
         if(topHitLeft || topHitRight)
         {
-            animator.SetBool("isCrouched", true);
+            //animator.SetBool("isCrouched", true);
         } else if (!crouching && !(topHitLeft || topHitRight))
         {
-            animator.SetBool("isCrouched", false);
+            //animator.SetBool("isCrouched", false);
         }
 
         return !(topHitLeft || topHitRight);
@@ -484,6 +484,11 @@ public class PlayerController : MonoBehaviour
             speedBoostCollect(other.gameObject);
             if (other.GetComponent<collectibleBehavior>().getState().Equals("Respawns")) { StartCoroutine(collectibleRespawn(other, 5)); }
         }
+
+        if (other.gameObject.CompareTag("Fade Music"))
+        {
+            GameObject.Find("FMODEvents").GetComponent<Timer>().fadeOutMusic(3f);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -500,7 +505,7 @@ public class PlayerController : MonoBehaviour
         {
             inZoomArea = true;
             var fov = virtualCamera.m_Lens.FieldOfView;
-            int target = 60;
+            int target = 75;
             Vector2 pos = Vector2.MoveTowards(new Vector2(fov, 0), new Vector2(target, 0), 0.5f);
             virtualCamera.m_Lens.FieldOfView = pos.x;
         }

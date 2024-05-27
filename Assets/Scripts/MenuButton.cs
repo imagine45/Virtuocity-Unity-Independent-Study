@@ -34,7 +34,7 @@ public class MenuButton : MonoBehaviour
 
     public void loadFirstScene()
     {
-        StartCoroutine(exitAnim(2));
+        StartCoroutine(exitAnim(4));
     }
 
     IEnumerator exitAnim(int time)
@@ -61,6 +61,7 @@ public class MenuButton : MonoBehaviour
     public void continueGame()
     {
         SettingsManagement.instance.loadedFromContinue = true;
+        StartCoroutine(exitAnim(4));
         SceneManager.LoadScene(SceneManager.GetSceneAt(SettingsManagement.instance.currentScene).name);
     }
 

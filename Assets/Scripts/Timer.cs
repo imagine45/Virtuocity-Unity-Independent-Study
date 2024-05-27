@@ -9,6 +9,10 @@ public class Timer : MonoBehaviour
     public int currentBeat = 0;
     //public GameObject postProcess;
 
+    private bool musicFadeOut = false;
+    private float time = 0;
+    private float timeConstant = 0;
+
     public static int lastBeat = 0;
     public static string lastMarkerString = null;
 
@@ -56,6 +60,7 @@ public class Timer : MonoBehaviour
 
         musicInstance.setCallback(beatCallback, FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_BEAT | FMOD.Studio.EVENT_CALLBACK_TYPE.TIMELINE_MARKER);
         musicInstance.start();
+        musicInstance.setParameterByName("volume", 1.0f);
     }
 
     void OnDestroy()
@@ -135,5 +140,29 @@ public class Timer : MonoBehaviour
             }
         }
 
+        if (musicFadeOut == true)
+        {
+            MusicFadeOut();
+        }
+    }
+
+    public void fadeOutMusic(float t)
+    {
+        this.time = t;
+        timeConstant = t;
+        musicFadeOut = true;
+    }
+
+    private void MusicFadeOut()
+    {
+        if (time > 0)
+        {
+            Debug.Log(time / timeConstant);
+            time -= Time.deltaTime;
+            musicInstance.setParameterByName("volume", time / timeConstant);
+        } else
+        {
+            musicFadeOut = false;
+        }
     }
 }

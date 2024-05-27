@@ -17,6 +17,7 @@ TagManager:
   - Zoom In
   - Zoom In
   - Checkpoint
+  - Fade Music
   layers:
   - Default
   - TransparentFX

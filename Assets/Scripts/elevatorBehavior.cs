@@ -70,6 +70,7 @@ public class elevatorBehavior : MonoBehaviour
             playButtonSound();
             playElevatorSound();
             isMoving = true;
+            Object.Destroy(keySprite);
         }
     }
 

@@ -9,9 +9,11 @@ public class pauseMenu : MonoBehaviour
     [SerializeField] GameObject m_pauseMenu;
     [SerializeField] GameObject player;
 
-    private void Awake()
+
+    private void Start()
     {
         player = GameObject.Find("Player");
+        player.GetComponent<PlayerController>().isPaused = false;
     }
 
     public void Pause()
