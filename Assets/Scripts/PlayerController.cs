@@ -81,8 +81,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 checkpoint;
 
     public bool isPaused = false;
-
-
+    public GameObject pauseMenu;
     //Audio
     private EventInstance playerFootsteps;
 
@@ -802,5 +801,10 @@ public class PlayerController : MonoBehaviour
                 playerFootsteps.start();
             }
         }
+    }
+
+    public void cancel(InputAction.CallbackContext context)
+    {
+
     }
 }

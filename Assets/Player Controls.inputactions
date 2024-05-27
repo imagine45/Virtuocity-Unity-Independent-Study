@@ -451,9 +451,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Pause",
+                    "name": "Resume",
                     "type": "Button",
-                    "id": "a091d18b-1b42-47a3-abe5-e2258b01502e",
+                    "id": "f2c8d141-18c6-4c8e-886b-46bfe3248a00",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -881,12 +881,12 @@
                 },
                 {
                     "name": "",
-                    "id": "15e1be28-c218-4370-aee1-da11f619e450",
+                    "id": "3b633bca-6dd0-4f09-80f2-2abc866bbb6b",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Pause",
+                    "groups": "",
+                    "action": "Resume",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
