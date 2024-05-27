@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class movingBlock : MonoBehaviour
 {
+    [SerializeField] float timeToMove;
+    [SerializeField] bool[] beats;
     private GameObject keyFrame;
     private Rigidbody2D rb;
     private Vector3 startPos;
@@ -23,7 +25,7 @@ public class movingBlock : MonoBehaviour
         startPos = this.transform.position;
         endPos = this.transform.Find("Key Frame").position;
 
-        speed = Vector3.Distance(startPos, endPos) / 0.2f; // 0.5f is the time duration in seconds
+        speed = Vector3.Distance(startPos, endPos) / timeToMove; // 0.5f is the time duration in seconds
     }
 
     void FixedUpdate()
@@ -51,9 +53,10 @@ public class movingBlock : MonoBehaviour
 
     private void Move()
     {
-        if (timer.GetComponent<Timer>().currentBeat == 1)
+        if (beats[timer.GetComponent<Timer>().currentBeat - 1])
         {
             isMoving = true;
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Objects/Moving Block/Block Moving");
         }
     }
 }

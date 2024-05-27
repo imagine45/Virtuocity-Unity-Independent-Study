@@ -5,7 +5,7 @@
 			<value>Block Moving</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{2de2f39c-64ce-406e-b706-8cf4aa9630ac}</destination>
@@ -98,6 +98,7 @@
 		<relationship name="effects">
 			<destination>{8caa8493-1844-4f26-9080-3352f8c5439e}</destination>
 			<destination>{0aa89f51-ddbd-412e-8815-772acd2033d0}</destination>
+			<destination>{d69e4664-0997-4e69-a7ca-1f70ecc98375}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{79605a88-eba1-452a-b8c2-aab8cd8305cb}" />
@@ -126,4 +127,5 @@
 			<value>-8.5</value>
 		</property>
 	</object>
+	<object class="SpatialiserEffect" id="{d69e4664-0997-4e69-a7ca-1f70ecc98375}" />
 </objects>

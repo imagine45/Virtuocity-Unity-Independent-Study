@@ -5,11 +5,6 @@ using UnityEngine;
 public class menuSounds : MonoBehaviour
 {
 
-    private void Start()
-    {
-        
-    }
-
     public void onEnter()
     {
         FMODUnity.RuntimeManager.PlayOneShot("event:/HUD/Button Hover");
