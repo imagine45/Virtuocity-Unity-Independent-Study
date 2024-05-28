@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
 
 public class pauseMenu : MonoBehaviour
 {
@@ -19,16 +18,9 @@ public class pauseMenu : MonoBehaviour
 
     public void Pause()
     {
-        if (!player.GetComponent<PlayerController>().isPaused)
-        {
-            player.GetComponent<PlayerController>().isPaused = true;
-            m_pauseMenu.SetActive(true);
-            Time.timeScale = 0f;
-        }
-        else
-        {
-            Resume();
-        }
+        player.GetComponent<PlayerController>().isPaused = true;
+        m_pauseMenu.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     public void Resume()
@@ -37,7 +29,6 @@ public class pauseMenu : MonoBehaviour
         m_pauseMenu.SetActive(false);
         Time.timeScale = 1f;
     }
-
 
     public void Restart()
     {
@@ -51,7 +42,6 @@ public class pauseMenu : MonoBehaviour
     public void ExitToMenu()
     {
         SettingsManagement.instance.saveSettings();
-        Time.timeScale = 1f;
         SceneManager.LoadScene("Menu");
     }
 

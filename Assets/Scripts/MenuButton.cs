@@ -54,6 +54,11 @@ public class MenuButton : MonoBehaviour
         this.GetComponent<Image>().color = color; 
     }
 
+    public void exitToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
     public void continueGame()
     {
         SettingsManagement.instance.loadedFromContinue = true;
