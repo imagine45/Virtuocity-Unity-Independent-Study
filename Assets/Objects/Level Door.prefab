@@ -132,9 +132,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c7e93bf74d8dc43a44a79878395b10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   animator: {fileID: 3877745258256131201}
-  openSpeed: 1
+  OpenEventName:
+    Guid:
+      Data1: 2042150672
+      Data2: 1339568748
+      Data3: 1345646248
+      Data4: -2015508970
+    Path: event:/Objects/Speed Door/Speed Door Open
+  CloseEventName:
+    Guid:
+      Data1: 319618289
+      Data2: 1083354355
+      Data3: 1199141780
+      Data4: 242606617
+    Path: event:/Objects/Speed Door/Speed Door Close
+  openSpeed: 3.5
 --- !u!50 &3877745258256131203
 Rigidbody2D:
   serializedVersion: 4

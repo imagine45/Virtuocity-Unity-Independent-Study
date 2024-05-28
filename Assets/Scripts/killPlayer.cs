@@ -5,13 +5,33 @@ using UnityEngine;
 public class killPlayer : MonoBehaviour
 {
 
-    public GameObject player;
+    private GameObject player;
+    bool killsPlayer = false;
 
+    private void Start()
+    {
+        player = GameObject.Find("Player");
+    }
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            player.GetComponent<PlayerController>().kill();
+            if (killsPlayer)
+            {
+                player.GetComponent<PlayerController>().kill();
+            }
+        }
+    }
+
+    private void Update()
+    {
+        if (player.GetComponent<Rigidbody2D>().velocity.y > 0.1f)
+        {
+            killsPlayer = false;
+        }
+        else
+        {
+            killsPlayer = true;
         }
     }
 }

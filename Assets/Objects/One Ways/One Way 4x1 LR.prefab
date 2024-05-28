@@ -263,6 +263,7 @@ GameObject:
   - component: {fileID: 6592846674013256985}
   - component: {fileID: 7058060968163185326}
   - component: {fileID: 199458500185190150}
+  - component: {fileID: 245224372}
   m_Layer: 3
   m_Name: One Way 4x1 LR
   m_TagString: Metal
@@ -336,6 +337,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.9967515, y: 0.250812}
   m_EdgeRadius: 0
+--- !u!114 &245224372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5257612782011588871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dd02179d47b60f40919393dd0d3dfb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 7058060968163185326}
 --- !u!1 &8582081041567975608
 GameObject:
   m_ObjectHideFlags: 0

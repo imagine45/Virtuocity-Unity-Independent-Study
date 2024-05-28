@@ -93,6 +93,7 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
+        playerFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.playerFootsteps);
         if (SettingsManagement.instance != null && !SettingsManagement.instance.loadedFromContinue)
         {
             if (GameObject.Find("Start Pos"))
@@ -112,7 +113,6 @@ public class PlayerController : MonoBehaviour
             }
             resetCharacter();
         }
-        playerFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.playerFootsteps);
     }
 
     public float getSpeed ()
@@ -207,6 +207,10 @@ public class PlayerController : MonoBehaviour
                 {
                     dyCap = dyFallCap;
                 }
+            } else
+            {
+                animator.SetBool("jumped", true);
+                animator.SetBool("isFalling", false);
             }
 
             coyoteTime();

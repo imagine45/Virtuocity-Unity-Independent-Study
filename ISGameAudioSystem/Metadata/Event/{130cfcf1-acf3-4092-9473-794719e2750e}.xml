@@ -64,6 +64,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{44fcf5cd-1954-43cf-aec3-06abb1903b4b}">
+		<property name="volume">
+			<value>1.5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{d329c191-a71e-4674-a7ef-ce1e7f3afabf}</destination>
 		</relationship>
@@ -93,12 +96,24 @@
 	<object class="MixerBusPanner" id="{ea663936-a248-4eab-97b0-83a835afaff9}" />
 	<object class="MixerBusEffectChain" id="{d329c191-a71e-4674-a7ef-ce1e7f3afabf}">
 		<relationship name="effects">
+			<destination>{71424d6f-6a6a-4320-b276-6347f4956ccb}</destination>
 			<destination>{2f544138-a0e3-48be-9ed3-bac7feb5b92c}</destination>
 			<destination>{d6e0fe24-7528-4503-8f59-7bda3bca840b}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{7141e01d-5bcb-4857-a53c-c35f48596042}" />
 	<object class="MixerBusFader" id="{348926bc-8ae1-4f93-9e5b-c370f56bfe11}" />
+	<object class="ObjectSpatialiserEffect" id="{71424d6f-6a6a-4320-b276-6347f4956ccb}">
+		<property name="distanceRolloffType">
+			<value>1</value>
+		</property>
+		<property name="minimumDistance">
+			<value>0</value>
+		</property>
+		<property name="overrideRange">
+			<value>true</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{2f544138-a0e3-48be-9ed3-bac7feb5b92c}" />
 	<object class="SFXReverbEffect" id="{d6e0fe24-7528-4503-8f59-7bda3bca840b}">
 		<property name="decayTime">

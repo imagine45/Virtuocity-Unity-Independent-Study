@@ -429,7 +429,7 @@
 			<value>0</value>
 		</property>
 		<property name="value">
-			<value>-80</value>
+			<value>-66.6666641</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{8062eab8-9930-4634-b0be-1444c6592d7c}">
@@ -437,7 +437,7 @@
 			<value>3</value>
 		</property>
 		<property name="value">
-			<value>5</value>
+			<value>7</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{938fb9c5-ac10-4335-ab1e-a6d5cb0d2068}">
@@ -445,7 +445,7 @@
 			<value>2</value>
 		</property>
 		<property name="value">
-			<value>-80</value>
+			<value>-51.6666679</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{5d696149-ac22-4faa-b65a-22c53dd89fb7}">
@@ -453,7 +453,7 @@
 			<value>1</value>
 		</property>
 		<property name="value">
-			<value>-6.5</value>
+			<value>-1</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{d00dbbd8-eb3d-4bf5-a240-bdd3d2671491}">
@@ -461,7 +461,7 @@
 			<value>3</value>
 		</property>
 		<property name="value">
-			<value>-80</value>
+			<value>-51.6666679</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{13d8d8a6-1ba4-4c8b-be0b-bd4c81f7d1be}">
@@ -469,7 +469,7 @@
 			<value>0</value>
 		</property>
 		<property name="value">
-			<value>-80</value>
+			<value>-51.6666679</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{ad5ddd79-4efa-41f5-aff3-2f3a3bf0fd2f}">
@@ -477,7 +477,7 @@
 			<value>0</value>
 		</property>
 		<property name="value">
-			<value>-80</value>
+			<value>-63.3333359</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{e9a7d498-462b-4fb6-89ba-e4cd48ea6b69}">
@@ -485,7 +485,7 @@
 			<value>2</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>2.5</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{ae2c9337-10df-4677-97e6-caf968f79154}">
@@ -493,7 +493,7 @@
 			<value>3</value>
 		</property>
 		<property name="value">
-			<value>-80</value>
+			<value>-63.3333359</value>
 		</property>
 	</object>
 </objects>

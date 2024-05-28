@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class movingBlock : MonoBehaviour
 {
+    public FMODUnity.EventReference EventName;
+    private FMOD.Studio.EventInstance movingBlockInstance;
+
     [SerializeField] float timeToMove;
     [SerializeField] bool[] beats;
     private GameObject keyFrame;
@@ -18,6 +21,7 @@ public class movingBlock : MonoBehaviour
 
     private void Start()
     {
+        movingBlockInstance = FMODUnity.RuntimeManager.CreateInstance(EventName);
         rb = GetComponent<Rigidbody2D>();
         timer = GameObject.Find("FMODEvents");
         Timer.beatUpdated += Move;
@@ -25,7 +29,7 @@ public class movingBlock : MonoBehaviour
         startPos = this.transform.position;
         endPos = this.transform.Find("Key Frame").position;
 
-        speed = Vector3.Distance(startPos, endPos) / timeToMove; // 0.5f is the time duration in seconds
+        speed = Vector3.Distance(startPos, endPos) / timeToMove;
     }
 
     void FixedUpdate()
@@ -34,15 +38,19 @@ public class movingBlock : MonoBehaviour
         {
             Vector3 targetPos = movingForward ? endPos : startPos;
             Vector3 direction = (targetPos - transform.position).normalized;
-            rb.velocity = direction * speed;
+            float distanceToTarget = Vector3.Distance(transform.position, targetPos);
+            float moveDistance = speed * Time.fixedDeltaTime;
 
-            if (Vector3.Distance(transform.position, targetPos) < 0.1f)
+            if (moveDistance >= distanceToTarget)
             {
+                rb.velocity = Vector3.zero;
+                rb.position = targetPos;
                 isMoving = false;
                 movingForward = !movingForward;
-                rb.velocity = Vector3.zero;
-
-                //If player velocity doesn't work as expected, add this block's velocity to the player's here
+            }
+            else
+            {
+                rb.velocity = direction * speed;
             }
         }
         else
@@ -51,12 +59,35 @@ public class movingBlock : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D
+        {
+            position = RuntimeUtils.ToFMODVector(transform.position),
+            forward = RuntimeUtils.ToFMODVector(transform.forward),
+            up = RuntimeUtils.ToFMODVector(transform.up)
+        };
+        movingBlockInstance.set3DAttributes(attributes);
+    }
+
     private void Move()
     {
         if (beats[timer.GetComponent<Timer>().currentBeat - 1])
         {
-            isMoving = true;
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Objects/Moving Block/Block Moving");
+            isMoving = true; 
+            movingBlockInstance.start();
         }
+    }
+
+    private void EndSound()
+    {
+        movingBlockInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        movingBlockInstance.release();
+        Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        EndSound();
     }
 }

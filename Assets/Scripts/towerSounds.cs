@@ -26,7 +26,6 @@ public class towerSounds : MonoBehaviour
     void Update()
     {
         var distance = Mathf.Clamp01(Vector3.Distance(player.transform.position, this.transform.position) / radius);
-        Debug.Log(distance);
         //if (Vector3.Distance(player.transform.position, this.transform.position) <= min) { distance = 0; }
         if (player.transform.position.y <= this.transform.position.y - 10) { distance = 1;  }
 
