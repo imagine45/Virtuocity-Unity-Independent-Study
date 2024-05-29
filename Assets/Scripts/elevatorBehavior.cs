@@ -36,7 +36,6 @@ public class elevatorBehavior : MonoBehaviour
                 Color color = indicatorSpriteRenderer.color;
                 color.a = 0f; // Set the initial alpha to 0
                 indicatorSpriteRenderer.color = color;
-                keySprite.SetActive(false);
             }
         }
 
@@ -77,18 +76,15 @@ public class elevatorBehavior : MonoBehaviour
     //Find if the player is in radius
     private void InRadius()
     {
-        if (Vector2.Distance(player.transform.position, buttonPos) <= radius)
+        if (Vector2.Distance(player.transform.position, buttonPos) <= radius && !isMoving)
         {
             Color color = indicatorSpriteRenderer.color;
             color.a = Mathf.Clamp01(fadeRadius - Vector2.Distance(player.transform.position, buttonPos));
             indicatorSpriteRenderer.color = color;
-
-            keySprite.SetActive(true);
             inRadius = true;
         }
         else
         {
-            keySprite.SetActive(false);
             inRadius = false;
         }
     }
