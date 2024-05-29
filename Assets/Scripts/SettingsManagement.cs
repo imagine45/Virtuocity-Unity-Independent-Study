@@ -69,8 +69,9 @@ public class SettingsManagement : MonoBehaviour
         string path = Application.persistentDataPath + "/savefile.json";
         if (File.Exists(path))
         {
+            SaveData data = new SaveData();
             string json = File.ReadAllText(path);
-            SaveData data = JsonUtility.FromJson<SaveData>(json);
+            JsonUtility.FromJsonOverwrite(json, data);
 
             warpingActive = data.warpingActive;
             resDropdownIndex = data.resDropdownIndex;

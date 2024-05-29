@@ -20,6 +20,7 @@ public class pauseMenu : MonoBehaviour
 
     public void Pause()
     {
+        Debug.Log("pausing");
         player.GetComponent<PlayerController>().isPaused = true;
         m_pauseMenu.SetActive(true);
         Time.timeScale = 0f;

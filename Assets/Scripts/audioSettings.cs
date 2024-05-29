@@ -31,12 +31,12 @@ public class audioSettings : MonoBehaviour
     {
         SettingsManagement.instance.sfxVolume = sfxSlider.GetComponent<Slider>().value;
         Debug.Log(sfxSlider.GetComponent<Slider>().value);
-        //FMODUnity.RuntimeManager.StudioSystem.setParameterByName("SFX Volume", sfxSlider.GetComponent<Slider>().value);
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("SFX Volume", sfxSlider.GetComponent<Slider>().value);
     }
 
     public void changeMusicVolume()
     {
-        SettingsManagement.instance.sfxVolume = musicSlider.GetComponent<Slider>().value;
-        //FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Music Volume", musicSlider.GetComponent<Slider>().value);
+        SettingsManagement.instance.musicVolume = musicSlider.GetComponent<Slider>().value;
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Music Volume", musicSlider.GetComponent<Slider>().value);
     }
 }
