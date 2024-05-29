@@ -13,6 +13,8 @@ public class SettingsManagement : MonoBehaviour
     public int currentScene;
     public Vector2 checkpoint;
     public bool loadedFromContinue;
+    public float sfxVolume;
+    public float musicVolume;
 
     // Start is called before the first frame update
     void Awake()
@@ -36,6 +38,8 @@ public class SettingsManagement : MonoBehaviour
         public Resolution curResolution;
         public int currentScene;
         public Vector2 checkpoint;
+        public float sfxVolume;
+        public float musicVolume;
     }
 
     public void saveSettings()
@@ -45,6 +49,9 @@ public class SettingsManagement : MonoBehaviour
         data.warpingActive = warpingActive;
         data.curResolution = curResolution;
         data.checkpoint = checkpoint;
+        data.sfxVolume = sfxVolume;
+        data.musicVolume = musicVolume;
+
         if (SceneManager.GetActiveScene().buildIndex != 0)
         {
             data.currentScene = SceneManager.GetActiveScene().buildIndex;
@@ -66,6 +73,8 @@ public class SettingsManagement : MonoBehaviour
             curResolution = data.curResolution;
             checkpoint = data.checkpoint;
             currentScene = data.currentScene;
+            musicVolume = data.musicVolume;
+            sfxVolume = data.sfxVolume;
         }
     }
 }

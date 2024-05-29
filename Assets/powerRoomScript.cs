@@ -30,7 +30,7 @@ public class powerRoomScript : MonoBehaviour
                 Color color = indicatorSpriteRenderer.color;
                 color.a = 0f; // Set the initial alpha to 0
                 indicatorSpriteRenderer.color = color;
-                keySprite.SetActive(false);
+                //keySprite.SetActive(false);
             }
         }
     }
@@ -46,8 +46,7 @@ public class powerRoomScript : MonoBehaviour
         {
             animator.SetTrigger("powerOn");
             //playButtonSound();
-            //playElevatorSound();
-            clicked= true;
+            clicked = true;
             Object.Destroy(keySprite);
 
             sky.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
@@ -57,19 +56,22 @@ public class powerRoomScript : MonoBehaviour
 
     private void InRadius()
     {
-        if (Vector2.Distance(player.transform.position, buttonPos) <= radius)
+        if (Vector2.Distance(player.transform.position, buttonPos) <= radius && !clicked)
         {
             Color color = indicatorSpriteRenderer.color;
             color.a = Mathf.Clamp01(radius - Vector2.Distance(player.transform.position, buttonPos));
             indicatorSpriteRenderer.color = color;
 
-            keySprite.SetActive(true);
             inRadius = true;
         }
         else
         {
-            keySprite.SetActive(false);
             inRadius = false;
         }
+    }
+
+    public bool isClicked()
+    {
+        return clicked;
     }
 }

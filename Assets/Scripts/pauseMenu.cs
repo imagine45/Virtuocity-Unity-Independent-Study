@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class pauseMenu : MonoBehaviour
 {
 
     [SerializeField] GameObject m_pauseMenu;
     [SerializeField] GameObject player;
+    private Color color;
 
 
     private void Start()
@@ -21,6 +23,16 @@ public class pauseMenu : MonoBehaviour
         player.GetComponent<PlayerController>().isPaused = true;
         m_pauseMenu.SetActive(true);
         Time.timeScale = 0f;
+    }
+
+    public void sizeOnHover()
+    {
+        this.GetComponent<Image>().color = new Color(0.1f, 0.8f, 0.97f);
+    }
+
+    public void sizeOnExit()
+    {
+        this.GetComponent<Image>().color = color;
     }
 
     public void Resume()
@@ -43,6 +55,7 @@ public class pauseMenu : MonoBehaviour
     {
         SettingsManagement.instance.saveSettings();
         SceneManager.LoadScene("Menu");
+        Time.timeScale = 1f;
     }
 
     public void ExitToDesktop()

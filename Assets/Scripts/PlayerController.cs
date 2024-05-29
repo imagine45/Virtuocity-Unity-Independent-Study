@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour
 
     public float getSpeed ()
     {
-        return Mathf.Abs(dx); 
+        return Mathf.Abs(rb.velocity.x / speed); 
     }
 
     public float getCharge ()
@@ -246,6 +246,8 @@ public class PlayerController : MonoBehaviour
 
     private void jump()
     {
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Player Jump");
 
         if (!isCrouched())
         {

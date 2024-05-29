@@ -16,6 +16,8 @@ public class movingBlock : MonoBehaviour
     private bool isMoving = false;
     private bool movingForward = false;
     private float speed;
+    private Color moveColor = new Color(1, 154/255, 148/255);
+    private Color idleColor = new Color(156 / 255, 1, 148 / 255);
 
     private GameObject timer;
 
@@ -46,6 +48,7 @@ public class movingBlock : MonoBehaviour
                 rb.velocity = Vector3.zero;
                 rb.position = targetPos;
                 isMoving = false;
+                IdleColor();
                 movingForward = !movingForward;
             }
             else
@@ -56,6 +59,7 @@ public class movingBlock : MonoBehaviour
         else
         {
             rb.velocity = Vector3.zero;
+            IdleColor();
         }
     }
 
@@ -76,6 +80,7 @@ public class movingBlock : MonoBehaviour
         {
             isMoving = true; 
             movingBlockInstance.start();
+            MoveColor();
         }
     }
 
@@ -89,5 +94,21 @@ public class movingBlock : MonoBehaviour
     private void OnDestroy()
     {
         EndSound();
+    }
+
+    private void MoveColor()
+    {
+        for (int i = 1; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).GetComponent<SpriteRenderer>().color = moveColor;
+        }
+    }
+
+    private void IdleColor()
+    {
+        for (int i = 1; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).GetComponent<SpriteRenderer>().color = idleColor;
+        }
     }
 }

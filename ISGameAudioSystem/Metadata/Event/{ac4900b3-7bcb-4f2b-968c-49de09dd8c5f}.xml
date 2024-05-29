@@ -53,7 +53,7 @@
 			<destination>{4aed8e21-3bf1-466e-a6f3-937eb73cb99b}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{f3bb2efd-990c-49ef-a02b-115e8cd8176c}</destination>
+			<destination>{6d5fa43c-9087-4319-a15e-671fa8cd4313}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{99840298-593c-43d0-b30c-9a8cc0468770}" />
@@ -78,8 +78,9 @@
 		<property name="length">
 			<value>0.55356009070294787</value>
 		</property>
+		<property name="name" />
 		<property name="volume">
-			<value>4</value>
+			<value>1</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{53d86bb0-d1fd-430b-a20f-b889c24e9333}</destination>
@@ -106,7 +107,7 @@
 			<value>pitch</value>
 		</property>
 		<property name="amount">
-			<value>3.5</value>
+			<value>4</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{67946b23-cf40-46d7-a21f-ffda997c53a7}" />

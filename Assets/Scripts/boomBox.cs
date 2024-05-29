@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class boomBox : MonoBehaviour
 {
+
+    public FMODUnity.EventReference EventName;
+    private FMOD.Studio.EventInstance boomboxInstance;
+
     [SerializeField] Animator animator;
+    [SerializeField] bool[] beats;
     private GameObject timer;
     private GameObject player;
     private double time;
@@ -12,6 +17,7 @@ public class boomBox : MonoBehaviour
 
     private void Start()
     {
+        boomboxInstance = FMODUnity.RuntimeManager.CreateInstance(EventName);
         timer = GameObject.Find("FMODEvents");
         player = GameObject.Find("Player");
         Timer.beatUpdated += explode;
@@ -20,14 +26,28 @@ public class boomBox : MonoBehaviour
     private void OnDestroy()
     {
         Timer.beatUpdated -= explode;
+        boomboxInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        boomboxInstance.release();
     }
+
+    private void Update()
+    {
+        FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D
+        {
+            position = RuntimeUtils.ToFMODVector(transform.position),
+            forward = RuntimeUtils.ToFMODVector(transform.forward),
+            up = RuntimeUtils.ToFMODVector(transform.up)
+        };
+        boomboxInstance.set3DAttributes(attributes);
+    }
+
 
     private void explode()
     {
-        if (timer.GetComponent<Timer>().currentBeat == 1)
+        if (beats[timer.GetComponent<Timer>().currentBeat - 1])
         {
             animator.SetTrigger("explode");
-            //Debug.Log("boom");
+            boomboxInstance.start();
 
             startTime(Vector2.Distance(player.transform.position, this.transform.position));
             

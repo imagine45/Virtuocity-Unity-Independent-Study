@@ -5,7 +5,7 @@
 			<value>Boombox Explode</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{067dbff9-a1e0-4f3e-a2e5-ae75351881d1}</destination>
@@ -53,7 +53,7 @@
 			<destination>{ce148d81-cbc6-49fc-b698-01d0e4693868}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{f3bb2efd-990c-49ef-a02b-115e8cd8176c}</destination>
+			<destination>{6d5fa43c-9087-4319-a15e-671fa8cd4313}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{92feed92-3aed-4785-a631-93205b9b80c1}" />
@@ -92,6 +92,8 @@
 		<relationship name="effects">
 			<destination>{47ef15ca-0ea3-4ffd-9cd1-74a62dc3f915}</destination>
 			<destination>{5d1fe12c-c73e-4bae-a492-96e292c5c5cd}</destination>
+			<destination>{eda9968b-792d-4063-a5bc-476412c6c428}</destination>
+			<destination>{ad68345b-97b7-4c09-b8e0-3da7a1570d82}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{a5237cd8-8daf-4e71-b7b3-874bcea46852}" />
@@ -120,4 +122,16 @@
 			<value>-8.5</value>
 		</property>
 	</object>
+	<object class="ObjectSpatialiserEffect" id="{eda9968b-792d-4063-a5bc-476412c6c428}">
+		<property name="distanceRolloffType">
+			<value>1</value>
+		</property>
+		<property name="minimumDistance">
+			<value>0</value>
+		</property>
+		<property name="overrideRange">
+			<value>true</value>
+		</property>
+	</object>
+	<object class="SpatialiserEffect" id="{ad68345b-97b7-4c09-b8e0-3da7a1570d82}" />
 </objects>

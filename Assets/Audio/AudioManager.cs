@@ -34,9 +34,10 @@ public class AudioManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Menu")
         {
-            Debug.Log("Menu Screen");
+            ambianceEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            ambianceEventInstance.release();
             Destroy(gameObject);
-        }
+        } 
     }
     private void InitializeAmbiance(EventReference ambianceEventReference)
     {
