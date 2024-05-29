@@ -7,6 +7,8 @@ public class powerRoomScript : MonoBehaviour
 
     [SerializeField] Animator animator;
     [SerializeField] GameObject keySprite;
+    public FMODUnity.EventReference EventName;
+    private FMOD.Studio.EventInstance powerInstance;
     private GameObject player;
     private GameObject sky;
     private float radius;
@@ -17,6 +19,7 @@ public class powerRoomScript : MonoBehaviour
 
     void Start()
     {
+        powerInstance = FMODUnity.RuntimeManager.CreateInstance(EventName);
         player = GameObject.Find("Player");
         sky = GameObject.Find("Neon City Background Sky");
         radius = 5f;
@@ -35,9 +38,22 @@ public class powerRoomScript : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        powerInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        powerInstance.release();
+    }
+
     void Update()
     {
         InRadius();
+        FMOD.ATTRIBUTES_3D attributes = new FMOD.ATTRIBUTES_3D
+        {
+            position = RuntimeUtils.ToFMODVector(transform.position),
+            forward = RuntimeUtils.ToFMODVector(transform.forward),
+            up = RuntimeUtils.ToFMODVector(transform.up)
+        };
+        powerInstance.set3DAttributes(attributes);
     }
 
     public void PowerOn()
@@ -47,6 +63,7 @@ public class powerRoomScript : MonoBehaviour
             animator.SetTrigger("powerOn");
             //playButtonSound();
             clicked = true;
+            powerInstance.start();
             Object.Destroy(keySprite);
 
             sky.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
