@@ -1074,6 +1074,7 @@ GameObject:
   m_Component:
   - component: {fileID: 209414906}
   - component: {fileID: 209414908}
+  - component: {fileID: 209414909}
   m_Layer: 5
   m_Name: SFX Volume Slider
   m_TagString: Untagged
@@ -1168,6 +1169,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &209414909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209414905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 935019feff58f1149a5e3a2ada379184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &210240519
 GameObject:
   m_ObjectHideFlags: 0
@@ -5702,6 +5715,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1027886785}
   - component: {fileID: 1027886786}
+  - component: {fileID: 1027886787}
   m_Layer: 5
   m_Name: Music Volume Slider
   m_TagString: Untagged
@@ -5796,6 +5810,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1027886787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1027886784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 935019feff58f1149a5e3a2ada379184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1028704987
 GameObject:
   m_ObjectHideFlags: 0
@@ -7026,7 +7052,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 3372220415
   m_fontColor: {r: 1, g: 1, b: 1, a: 0.78431374}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -8857,6 +8883,7 @@ GameObject:
   - component: {fileID: 1468462670}
   - component: {fileID: 1468462669}
   - component: {fileID: 1468462673}
+  - component: {fileID: 1468462674}
   m_Layer: 5
   m_Name: isFullScreen
   m_TagString: Untagged
@@ -9061,6 +9088,18 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &1468462674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468462667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 935019feff58f1149a5e3a2ada379184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1487283436
 GameObject:
   m_ObjectHideFlags: 0
@@ -9227,6 +9266,7 @@ GameObject:
   - component: {fileID: 1512569169}
   - component: {fileID: 1512569170}
   - component: {fileID: 1512569171}
+  - component: {fileID: 1512569172}
   m_Layer: 5
   m_Name: Speed Warping
   m_TagString: Untagged
@@ -9406,6 +9446,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1512569172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512569167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 935019feff58f1149a5e3a2ada379184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1530198050
 GameObject:
   m_ObjectHideFlags: 0
@@ -10164,7 +10216,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 3372220415
   m_fontColor: {r: 1, g: 1, b: 1, a: 0.78431374}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -10611,6 +10663,7 @@ GameObject:
   - component: {fileID: 1707813818}
   - component: {fileID: 1707813821}
   - component: {fileID: 1707813822}
+  - component: {fileID: 1707813823}
   m_Layer: 5
   m_Name: Resolution Dropdown
   m_TagString: Untagged
@@ -10820,6 +10873,18 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &1707813823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707813816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 935019feff58f1149a5e3a2ada379184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1711279900
 GameObject:
   m_ObjectHideFlags: 0
@@ -11690,7 +11755,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 3372220415
   m_fontColor: {r: 1, g: 1, b: 1, a: 0.78431374}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -12436,6 +12501,10 @@ MonoBehaviour:
   currentScene: 0
   checkpoint: {x: 0, y: 0}
   loadedFromContinue: 0
+  sfxVolume: 0
+  musicVolume: 0
+  resDropdownIndex: 0
+  fullscreenDropdownIndex: 0
 --- !u!4 &2014262260
 Transform:
   m_ObjectHideFlags: 0
@@ -13183,7 +13252,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 3372220415
   m_fontColor: {r: 1, g: 1, b: 1, a: 0.78431374}
   m_enableVertexGradient: 0
   m_colorMode: 3

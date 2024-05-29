@@ -9,12 +9,13 @@ public class SettingsManagement : MonoBehaviour
     public static SettingsManagement instance;
 
     public bool warpingActive = true;
-    public Resolution curResolution;
     public int currentScene;
     public Vector2 checkpoint;
     public bool loadedFromContinue;
-    public float sfxVolume;
-    public float musicVolume;
+    public float sfxVolume = 1;
+    public float musicVolume = 1;
+    public int resDropdownIndex;
+    public int fullscreenDropdownIndex;
 
     // Start is called before the first frame update
     void Awake()
@@ -35,11 +36,12 @@ public class SettingsManagement : MonoBehaviour
     {
         //Display
         public bool warpingActive = true;
-        public Resolution curResolution;
+        public int resDropdownIndex;
+        public int fullscreenDropdownIndex;
         public int currentScene;
         public Vector2 checkpoint;
-        public float sfxVolume;
-        public float musicVolume;
+        public float sfxVolume = 1;
+        public float musicVolume = 1;
     }
 
     public void saveSettings()
@@ -47,7 +49,8 @@ public class SettingsManagement : MonoBehaviour
         SaveData data = new SaveData();
 
         data.warpingActive = warpingActive;
-        data.curResolution = curResolution;
+        data.resDropdownIndex = resDropdownIndex;
+        data.fullscreenDropdownIndex = fullscreenDropdownIndex;
         data.checkpoint = checkpoint;
         data.sfxVolume = sfxVolume;
         data.musicVolume = musicVolume;
@@ -70,11 +73,20 @@ public class SettingsManagement : MonoBehaviour
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
             warpingActive = data.warpingActive;
-            curResolution = data.curResolution;
+            resDropdownIndex = data.resDropdownIndex;
+            fullscreenDropdownIndex = data.fullscreenDropdownIndex;
             checkpoint = data.checkpoint;
             currentScene = data.currentScene;
             musicVolume = data.musicVolume;
             sfxVolume = data.sfxVolume;
+        }
+        else
+        {
+            warpingActive = true;
+            resDropdownIndex = 0;
+            fullscreenDropdownIndex = 0;
+            musicVolume = 1;
+            sfxVolume = 1;
         }
     }
 }

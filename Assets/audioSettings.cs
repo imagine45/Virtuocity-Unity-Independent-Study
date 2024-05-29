@@ -19,9 +19,6 @@ public class audioSettings : MonoBehaviour
     {
         //FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Music Volume", musicVal);
         //FMODUnity.RuntimeManager.StudioSystem.setParameterByName("SFX Volume", sfxVal);
-        sfxSlider.GetComponent<Slider>().value = sfxSlider.GetComponent<Slider>().value;
-        musicSlider.GetComponent<Slider>().value = musicSlider.GetComponent<Slider>().value;
-        sfxSlider.GetComponent<Slider>().value = 1;
     }
 
     // Update is called once per frame

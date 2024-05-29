@@ -12,7 +12,8 @@ public class MenuButton : MonoBehaviour
     public TMP_Dropdown resDropDown;
     public TMP_Dropdown fullscreenDropDown;
     public Toggle toggleButton;
-    private Color color; 
+    private Color color;
+    private int dropdownIndex;
 
     private bool isFullScreen = true;
 
@@ -21,7 +22,6 @@ public class MenuButton : MonoBehaviour
     {
         color = this.GetComponent<Image>().color;
         Screen.SetResolution(Screen.resolutions[Screen.resolutions.Length - 1].width, Screen.resolutions[Screen.resolutions.Length - 1].height, isFullScreen);
-        SettingsManagement.instance.curResolution = Screen.resolutions[Screen.resolutions.Length - 1];
         if (toggleButton != null)
         {
             if (toggleButton.name.Equals("Speed Warping"))
@@ -34,6 +34,7 @@ public class MenuButton : MonoBehaviour
 
     public void loadFirstScene()
     {
+        SettingsManagement.instance.saveSettings();
         StartCoroutine(exitAnim(4, "Tutorial Scene"));
     }
 
@@ -61,6 +62,7 @@ public class MenuButton : MonoBehaviour
 
     public void continueGame()
     {
+        SettingsManagement.instance.saveSettings();
         SettingsManagement.instance.loadedFromContinue = true;
         StartCoroutine(exitAnim(4, SceneManager.GetSceneAt(SettingsManagement.instance.currentScene).name));
     }
@@ -84,24 +86,34 @@ public class MenuButton : MonoBehaviour
         {
             case 0:
                 isFullScreen = true;
+                SettingsManagement.instance.fullscreenDropdownIndex = 0;
                 break;
             case 1:
                 isFullScreen = false;
+                SettingsManagement.instance.fullscreenDropdownIndex = 1;
                 break;
         }
         switch(resDropDown.value)
         {
             case 0:
                 Screen.SetResolution(1360, 768, isFullScreen);
+                dropdownIndex = 0;
+                SettingsManagement.instance.resDropdownIndex = dropdownIndex;
                 break;
             case 1:
                 Screen.SetResolution(1920, 1080, isFullScreen);
+                dropdownIndex = 1;
+                SettingsManagement.instance.resDropdownIndex = dropdownIndex;
                 break;
             case 2:
                 Screen.SetResolution(2560, 1440, isFullScreen);
+                dropdownIndex = 2;
+                SettingsManagement.instance.resDropdownIndex = dropdownIndex;
                 break;
             case 3:
                 Screen.SetResolution(2560, 1600, isFullScreen);
+                dropdownIndex = 3;
+                SettingsManagement.instance.resDropdownIndex = dropdownIndex;
                 break;
         }
     }
